@@ -13,8 +13,8 @@ const checkPassword = (password, passwordHash) => {
   })
 }
 
-const newToken = user => {
-  return jwt.sign({id: user._id}, JWT.jwt, {
+const newToken = (user, store) => {
+  return jwt.sign({id: user._id, role: user.role, storeId: store._id}, JWT.jwt, {
     expiresIn: JWT.jwtExp,
   })
 }

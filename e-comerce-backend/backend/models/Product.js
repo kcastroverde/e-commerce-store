@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const productSchema = mongoose.Schema({
+  storeId: {
+    type: mongoose.Types.ObjectId,
+    ref: "store",
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -21,6 +26,11 @@ const productSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  categorieId: {
+    type: mongoose.Types.ObjectId,
+    ref: "categorie",
+    required: true,
+  }
 });
 
 const Product = mongoose.model("product", productSchema);
