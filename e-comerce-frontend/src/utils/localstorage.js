@@ -10,13 +10,6 @@ export const getToken = () => {
   return false
 }
 
-export const isLogin = () => {
-  if (!!getToken()) {
-    return true
-  }
-  return false
-}
 
-export const logout = () => {
-  window.localStorage.clear()
-}
+
+

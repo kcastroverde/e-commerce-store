@@ -1,48 +1,33 @@
-import * as actionTypes from "../constants/productConstants";
+const PRODUCTS_INITAL_STATE = {
+  products: [],
+  loading: false,
+  error: false,
+  errorMsg: '',
+}
 
-export const getProductsReducer = (state = { products: [] }, action) => {
-  switch (action.type) {
-    case actionTypes.GET_PRODUCTS_REQUEST:
+const productsReducer = (state = PRODUCTS_INITAL_STATE, payload) => {
+  switch (payload.type) {
+    case 'REQUEST_PRODUCTS':
       return {
+        ...state,
         loading: true,
-        products: [],
-      };
-    case actionTypes.GET_PRODUCTS_SUCCESS:
+      }
+    case 'RECEIVE_PRODUCTS':
       return {
-        products: action.payload,
+        ...state,
         loading: false,
-      };
-    case actionTypes.GET_PRODUCTS_FAIL:
+        products: payload.payload.products,
+      }
+    case 'ERROR_PRODUCTS':
       return {
+        ...state,
         loading: false,
-        error: action.payload,
-      };
+        error: true,
+        errorMsg: payload.payload,
+      }
     default:
-      return state;
+      return state
   }
-};
+}
 
-export const getProductDetailsReducer = (state = { product: {} }, action) => {
-  switch (action.type) {
-    case actionTypes.GET_PRODUCT_DETAILS_REQUEST:
-      return {
-        loading: true,
-      };
-    case actionTypes.GET_PRODUCT_DETAILS_SUCCESS:
-      return {
-        loading: false,
-        product: action.payload,
-      };
-    case actionTypes.GET_PRODUCT_DETAILS_FAIL:
-      return {
-        loading: false,
-        error: action.payload,
-      };
-    case actionTypes.GET_PRODUCT_DETAILS_RESET:
-      return {
-        product: {},
-      };
-    default:
-      return state;
-  }
-};
+export default productsReducer;

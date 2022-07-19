@@ -3,11 +3,11 @@ const Cart = require('../models/Cart')
 const getCartProducts = async (req, res) => {
   try {
     const carts = await Cart.find({userId: req.user._id}).populate('productId')
-    // console.log(carts)
-    res.status(200).send({status: 'ok', carts})
+    console.log("cart get")
+    returnres.status(200).send({status: 'ok', carts})
   } catch (err) {
     console.log(err)
-    sendResponseError(500, `Error ${err}`, res)
+    return sendResponseError(500, `Error ${err}`, res)
   }
 }
 
@@ -19,20 +19,21 @@ const addProductInCart = async (req, res) => {
       {productId, count, userId: req.user._id},
       {upsert: true},
     )
-
-    res.status(201).send({status: 'ok', cart})
+    console.log("cart add")
+    return res.status(201).send({status: 'ok', cart})
   } catch (err) {
     console.log(err)
-    sendResponseError(500, `Error ${err}`, res)
+    return sendResponseError(500, `Error ${err}`, res)
   }
 }
 const deleteProductInCart = async (req, res) => {
   try {
-    await Cart.findByIdAndRemove(req.params.id)
+    await Cart.findByIdAndRemove(req.params.id);
+    console.log("cart delete")
     res.status(200).send({status: 'ok'})
   } catch (e) {
     console.log(err)
-    sendResponseError(500, `Error ${err}`, res)
+    return sendResponseError(500, `Error ${err}`, res)
   }
 }
 module.exports = {addProductInCart, deleteProductInCart, getCartProducts}

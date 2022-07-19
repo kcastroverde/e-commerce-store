@@ -1,88 +1,127 @@
-import {config} from './config'
+import axios from 'axios';
 import {getToken} from './localstorage'
 
-const getRequest = async path => {
-  // console.log(getToken())
-  try {
-    const params = {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + getToken(),
-      },
-    }
-    const res = await fetch(config.baseURL + path, params)
-    // console.log({res})
-    const data = await res.text()
-    return {statusCode: res.status, data}
-  } catch (e) {
-    console.log(`error in get Request (${path}) :- `, e)
+
+const API = "http://localhost:5000/api";
+const STORE_ID= "62d5b22ee529916689066b8c"
+//const STORE_ID= "62d5b221e529916689066b89"
+
+const getUser = async () => {
+  const token = getToken();
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
   }
+  const {data} = await axios.get(`${API}/user/user`, {headers})
+  return data
 }
 
-const postRequest = async (path, body) => {
-  try {
-    const params = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + getToken(),
-      },
-      body: JSON.stringify(body),
-    }
-
-    const res = await fetch(config.baseURL + path, params)
-    // console.log(res)
-
-    const data = await res.text()
-    // console.log({data})
-    return {statusCode: res.status, data}
-  } catch (e) {
-    console.log(`error in post Request (${path}) :- `, e)
-  }
+const sigIn = async (email, password) => {
+  const {data} = await axios.post(`${API}/user/signin`, {email, password})
+  //save token to localstorage
+  const token = data.token
+  localStorage.setItem('token', token)
+  return data
 }
 
-const DeleteRequest = async path => {
-  try {
-    const params = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + getToken(),
-      },
-    }
-
-    const res = await fetch(config.baseURL + path, params)
-
-    const data = await res.text()
-    return {statusCode: res.status, data}
-  } catch (e) {
-    console.log(`error in Delete Request (${path}) :- `, e)
-  }
+const sigUp = async (name, email, password, storeId) => {
+  const {data} = await axios.post(`${API}/user/signup`, {name, email, password, storeId})
+  //save token to localstorage
+  const token = data.token
+  localStorage.setItem('token', token)
+  return data
 }
 
-const putRequest = async (path, body) => {
-  try {
-    const params = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + getToken(),
-      },
-      body: JSON.stringify(body),
-    }
-
-    const res = await fetch(config.baseURL + path, params)
-
-    const data = await res.text()
-    return {statusCode: res.status, data}
-  } catch (e) {
-    console.log(`error in PUT Request (${path}) :- `, e)
-  }
+const getProducts = async () => {
+  const {data} = await axios.get(`${API}/products/${STORE_ID}`)
+  console.log("dataAPI", data)
+  return data
 }
+
+const getProductById = async (id) => {
+  const {data} = await axios.get(`${API}/products/${id}`)
+  return data
+}
+
+const getProductsByCategory = async (storeId, category) => {
+  const {data} = await axios.get(`${API}/products/category/${storeId}/${category}`)
+  return data
+}
+
+const createProduct = async (storeId, name, description, price, countInStock, imageUrl, category) => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.post(`${API}/products/create`, {storeId, name, description, price, countInStock, imageUrl, category}, {headers})
+  return data
+}
+
+const updateProduct = async (id, name, description, price, countInStock, imageUrl, category) => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.put(`${API}/products/update/${id}`, {name, description, price, countInStock, imageUrl, category}, {headers})
+  return data
+}
+
+const deleteProduct = async (id) => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.delete(`${API}/products/delete/${id}`, {headers})
+  return data
+}
+
+
+const getCategories = async (storeId) => {
+  const {data} = await axios.get(`${API}/categories/${storeId}`)
+  return data
+}
+
+const getCategoryById = async (id) => {
+  const {data} = await axios.get(`${API}/categories/${id}`)
+  return data
+}
+
+const createCategory = async (storeId, name) => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.post(`${API}/categories/create`, {storeId, name}, {headers})
+  return data
+}
+
+const deleteCategory = async (id) => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.delete(`${API}/categories/delete/${id}`, {headers})
+  return data
+}
+
 
 export const Api = {
-  getRequest,
-  postRequest,
-  DeleteRequest,
-  putRequest,
+  getUser,
+  sigIn,
+  sigUp,
+  getProducts,
+  getProductById,
+  getProductsByCategory,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getCategories,
+  getCategoryById,
+  createCategory,
+  deleteCategory
 }

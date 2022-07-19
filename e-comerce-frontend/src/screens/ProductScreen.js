@@ -3,8 +3,8 @@ import {useState, useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 
 // Actions
-import {getProductDetails} from '../redux/actions/productActions'
-import {addToCart} from '../redux/actions/cartActions'
+import {addToCart, removeFromCart} from '../redux/actions/cartActions'
+
 
 const ProductScreen = ({match, history}) => {
   const [qty, setQty] = useState(1)
@@ -16,7 +16,7 @@ const ProductScreen = ({match, history}) => {
 
   useEffect(() => {
     if (product && match.params.id !== product._id) {
-      dispatch(getProductDetails(match.params.id))
+      dispatch()
     }
   }, [dispatch, match, product])
 

@@ -6,23 +6,23 @@ import {useDispatch, useSelector} from 'react-redux'
 import Product from '../components/Product'
 
 //Actions
-import {getProducts as listProducts} from '../redux/actions/productActions'
-import {setUserDeatils} from '../redux/actions/userAction'
+import { fetchProducts } from '../redux/actions/productActions'
+
 
 const HomeScreen = () => {
   const dispatch = useDispatch()
 
-  const getProducts = useSelector(state => state.getProducts)
+  const getProducts = useSelector(state => state.product)
   const {products, loading, error} = getProducts
 
   useEffect(() => {
-    dispatch(listProducts())
+    dispatch(fetchProducts())
   }, [dispatch])
 
-  useEffect(() => {
-    dispatch(setUserDeatils())
-  }, [dispatch])
-
+  // useEffect(() => {
+  //   dispatch(setUserDeatils())
+  // }, [dispatch])
+  console.log(getProducts)
   return (
     <div className="homescreen">
       <h2 className="homescreen__title">Latest Products</h2>

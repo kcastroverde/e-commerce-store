@@ -3,21 +3,30 @@ const Product = require("../models/Product");
 const getProducts = async (req, res) => {
   try {
     const products = await Product.find({storeId: req.params.storeId,});
-    res.json(products);
+    if(products.length === 0){
+     return res.status(404).json({message: "No products loaded"});
+    }
+    console.log("products get");
+    return res.status(200).json(products);
+ 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-
-    res.json(product);
+    console.log("product get");
+    return res.status(200).json(product);
   } catch (error) {
+    //id don't exist
+    if(error.name === "CastError"){
+      return res.status(404).json({ message: "Product not found" });
+    }
     console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -27,40 +36,58 @@ const getProductsByCategory = async (req, res) => {
       storeId: req.params.storeId,
       category: req.params.category,
     });
-    res.json(products);
+    console.log("products get");
+    return res.status(200).json(products);
   } catch (error) {
+    //if category don't exist
+    if(error.name === "CastError"){
+      return res.status(404).json({ message: "Category not found" });
+    }
     console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server Error" });
   }
 }
 
 const createProduct = async (req, res) => {
   try {
-    const product = await Product.create(req.body, { new: true });
-    res.json(product);
+    const storeId = req.user.storeId;
+    console.log(req.body.categorieId);
+    const product = await Product.create({
+      storeId: storeId,
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      countInStock: req.body.countInStock,
+      imageUrl: req.body.imageUrl,
+      categorieId: req.body.categorieId,
+    });
+    console.log("product create");
+    return res.status(201).json(product);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server Error" });
   }
 }
 
 const updateProduct = async (req, res) => {
   try{
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {new: true});
-    res.json(product);
+    console.log("product update");
+    return res.status(200).json(product);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server Error" });
   }
 }
 
 const deleteProduct = async (req, res) => {
   try{
     const product = await Product.findByIdAndDelete(req.params.id);
-    res.json(product);
+    console.log("product delete");
+    return res.status(200).json("product deleted");
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server Error" });
   }
 }
 

@@ -1,39 +1,38 @@
-import * as actionTypes from '../constants/cartConstants'
-
 const CART_INITIAL_STATE = {
-  cartItems: [],
+  cart: [],
+  loading: false,
+  error: false,
+  errorMsg: '',
 }
 
-export const cartReducer = (state = CART_INITIAL_STATE, action) => {
-  switch (action.type) {
-    case actionTypes.ADD_TO_CART:
-      const item = action.payload
-
-      const existItem = state.cartItems.find(x => x.product === item.product)
-
-      if (existItem) {
-        return {
-          ...state,
-          cartItems: state.cartItems.map(x =>
-            x.product === existItem.product ? item : x,
-          ),
-        }
-      } else {
-        return {
-          ...state,
-          cartItems: [...state.cartItems, item],
-        }
-      }
-    case actionTypes.REMOVE_FROM_CART:
+const cartReducer = (state = CART_INITIAL_STATE, payload) => {
+  switch (payload.type) {
+    case 'REQUEST_CART':
       return {
         ...state,
-        cartItems: state.cartItems.filter(x => x.product !== action.payload),
+        loading: true,
       }
-    case actionTypes.FETCH_MY_CART:
+    case 'RECEIVE_CART':
       return {
-        cartItems: [...action.payload.carts],
+        ...state,
+        loading: false,
+        cart: payload.payload,
+      }
+    case 'UPDATE_CART':
+      return {
+        ...state,
+        cart: payload.payload,
+      }
+    case 'ERROR_CART':
+      return {
+        ...state,
+        loading: false,
+        error: true,
+        errorMsg: payload.payload,
       }
     default:
       return state
   }
 }
+
+export default cartReducer;

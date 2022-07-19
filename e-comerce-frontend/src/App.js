@@ -15,15 +15,18 @@ import SignUp from './screens/SignUp'
 import SignIn from './screens/SignIn'
 import {useDispatch} from 'react-redux'
 import {fetchCart} from './redux/actions/cartActions'
-import {setUserDeatils} from './redux/actions/userAction'
+import { getUserDetails } from './redux/actions/userAction'
+
 
 function App() {
   const [sideToggle, setSideToggle] = useState(false)
   // fetchCart
   const dispatch = useDispatch()
   useEffect(() => {
+    if(localStorage.getItem('token')) {
     dispatch(fetchCart())
-    dispatch(setUserDeatils())
+    dispatch(getUserDetails());
+    }
   }, [dispatch])
 
   return (

@@ -1,27 +1,58 @@
-import {Api} from '../../utils/Api'
-import * as actionTypes from '../constants/userContants'
+import axios from "axios";
+import { Api } from "../../utils/Api";
 
-export const setUserDeatils = () => async dispatch => {
-  const {statusCode, data} = await Api.getRequest(`/api/user/me`)
-  // console.log({statusCode, data})
-  if (statusCode === 400 || statusCode === 500) {
-    dispatch({
-      type: actionTypes.SET_INITIAL_STATE,
-    })
-    return
+const requestUser = () => ({
+  type: "REQUEST_USER_DETAILS",
+});
+
+const receiveUser = payload => ({
+  type: "RECEIVE_USER_DETAILS",
+  payload: payload,
+});
+
+const errorUser = payload => ({
+  type: "ERROR_USER_DETAILS",
+  payload: payload,
+});
+
+const logOutUser = () => ({
+  type: "LOG_OUT_USER",
+});
+
+
+export const getUserDetails = () => async dispatch => {
+  dispatch(requestUser());
+  try {
+    const { data } = await Api.getUser();
+    dispatch(receiveUser(data));
   }
-  const {user} = JSON.parse(data)
-  dispatch({
-    type: actionTypes.SET_USER,
-    payload: {
-      isLogin: true,
-      details: {...user},
-    },
-  })
+  catch (error) {
+    dispatch(errorUser(error));
+  }
+
 }
 
-export const setInitialState = () => async dispatch => {
-  dispatch({
-    type: actionTypes.SET_INITIAL_STATE,
-  })
+export const fetchSignIn = (email, password) => async dispatch => {
+  try {
+    const { data } = await Api.sigIn(email, password);
+    dispatch(receiveUser(data));
+  }
+  catch (error) {
+    dispatch(errorUser(error));
+  }
+}
+
+export const fetchSignUp = (name, email, password) => async dispatch => {
+  try {
+    const { data } = await Api.sigUp(name, email, password);
+    dispatch(receiveUser(data));
+  }
+  catch (error) {
+    dispatch(errorUser(error));
+  }
+}
+
+export const logOut = () => async dispatch => {
+  dispatch(logOutUser());
+  window.localStorage.removeItem("token");
 }

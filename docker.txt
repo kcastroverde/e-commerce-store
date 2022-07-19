@@ -1,0 +1,27 @@
+docker pull  //get the image from docker hub
+docker images //get all images
+
+docker create //create a container 
+docker start //start a container
+docker stop //stop a container
+
+docker ps //list all runing containers
+docker ps -a //list all containers
+
+docker rm //remove a container
+
+docker create --name mycontainer mongo //create a container with name mycontainer
+docker start mycontainer //start a container with name mycontainer
+
+docker create -p 27017:270717 --name mycontainer mongo //create a container with port 27017:270717
+
+docker logs mycontainer //get logs of a container
+docker logs mycontainer --follow //get logs of a container and follow the logs
+
+docker run -d -p 27017:27017 --name mycontainer mongo //run a container with port 27017:27017 and name mycontainer
+
+admin
+passStore123.
+
+git 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
+

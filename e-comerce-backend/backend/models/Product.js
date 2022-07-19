@@ -31,7 +31,11 @@ const productSchema = mongoose.Schema({
     ref: "categorie",
     required: true,
   }
-});
+},
+{
+  timestamps: true
+}
+);
 
 const Product = mongoose.model("product", productSchema);
 

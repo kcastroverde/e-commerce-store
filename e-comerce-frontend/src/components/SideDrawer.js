@@ -1,8 +1,8 @@
 import './SideDrawer.css'
 import {Link, useHistory} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import {setInitialState} from '../redux/actions/userAction'
-import {logout} from '../utils/localstorage'
+
+import { logOut } from '../redux/actions/userAction'
 
 const SideDrawer = ({show, click}) => {
   const sideDrawerClass = ['sidedrawer']
@@ -23,8 +23,8 @@ const SideDrawer = ({show, click}) => {
   }
   const _handleLogout = () => {
     // console.log('click')
-    dispatch(setInitialState())
-    logout()
+
+    logOut()
     history.push('/')
   }
 

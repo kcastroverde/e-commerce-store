@@ -2,8 +2,8 @@ import './Navbar.css'
 import {Link, useHistory} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import {useMemo} from 'react'
-import {logout} from '../utils/localstorage'
-import {setInitialState} from '../redux/actions/userAction'
+import { logOut } from '../redux/actions/userAction'
+
 
 const Navbar = ({click}) => {
   const cart = useSelector(state => state.cart)
@@ -20,8 +20,8 @@ const Navbar = ({click}) => {
 
   const _handleLogout = () => {
     // console.log('click')
-    dispatch(setInitialState())
-    logout()
+
+    logOut()
     history.push('/')
   }
 

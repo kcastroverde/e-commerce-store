@@ -3,10 +3,18 @@ const { post } = require('../routes/productRoutes')
 
 const userSchema = new mongoose.Schema(
   {
+    storeId:{
+      type: mongoose.Types.ObjectId,
+      ref: 'store',
+      required: true,
+    },
     email: {
       type: String,
-      unique: true,
       required: true,
+    },
+    dateCreated: {
+      type: Date,
+      default: Date.now,
     },
     password: {
       type: String,
@@ -14,7 +22,7 @@ const userSchema = new mongoose.Schema(
     },
     role:{
       type: String,
-      enum: ['user', 'admin'],
+      enum: ['user', 'admin', 'superAdmin'],
       default: 'user'
     },
     fullName: {
@@ -27,6 +35,12 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     postalCode: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    country: {
       type: String,
     }
   },

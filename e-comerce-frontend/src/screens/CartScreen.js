@@ -8,14 +8,14 @@ import CartItem from '../components/CartItem'
 
 // Actions
 import {addToCart, removeFromCart} from '../redux/actions/cartActions'
-import useLogin from '../utils/hooks/useLogin'
+
 
 const CartScreen = () => {
   const dispatch = useDispatch()
 
   const cart = useSelector(state => state.cart)
 
-  const {loginInfo} = useLogin()
+  const {loginInfo} = false
 
   const {cartItems} = cart
 
