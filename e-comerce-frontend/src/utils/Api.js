@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getToken} from './localstorage'
+import {getToken, setToken} from './localstorage'
 
 
 const API = "http://localhost:5000/api";
@@ -16,19 +16,22 @@ const getUser = async () => {
   return data
 }
 
-const sigIn = async (email, password) => {
-  const {data} = await axios.post(`${API}/user/signin`, {email, password})
+const sigIn = async ({email, password}) => {
+  const {data} = await axios.post(`${API}/user/signin`, 
+  {
+    email, 
+    password, 
+    storeId: STORE_ID
+  })
   //save token to localstorage
-  const token = data.token
-  localStorage.setItem('token', token)
+  setToken(data.token, STORE_ID)
   return data
 }
 
 const sigUp = async (name, email, password, storeId) => {
   const {data} = await axios.post(`${API}/user/signup`, {name, email, password, storeId})
   //save token to localstorage
-  const token = data.token
-  localStorage.setItem('token', token)
+  setToken(data.token, storeId)
   return data
 }
 
@@ -109,6 +112,40 @@ const deleteCategory = async (id) => {
   return data
 }
 
+const addToCart = async (productId, quantity) => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.post(`${API}/cart/add`, {productId, quantity}, {headers})
+  return data
+}
+
+const deleteFromCart = async (productId, quantity) => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.post(`${API}/cart/delete`, {productId, quantity}, {headers})
+  return data
+}
+
+
+const getCart = async () => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.get(`${API}/cart/get`, {headers})
+  return data
+}
+
+
+
+
 
 export const Api = {
   getUser,
@@ -123,5 +160,8 @@ export const Api = {
   getCategories,
   getCategoryById,
   createCategory,
-  deleteCategory
+  deleteCategory,
+  addToCart,
+  deleteFromCart,
+  getCart
 }

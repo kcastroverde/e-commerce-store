@@ -12,6 +12,13 @@
 .left__image {
   margin: 1rem;
   flex: 0.6;
+
+}
+
+.left__image img {
+  width: 100%;
+  aspect-ratio: 1;
+  max-height: 500px;
 }
 
 .left__info {

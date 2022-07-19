@@ -1,34 +1,40 @@
-import React, {useCallback, useState} from 'react'
-import {Link, useHistory} from 'react-router-dom'
-import {Api} from '../../utils/Api'
-import {setToken} from '../../utils/localstorage'
-import './signIn.css'
+import React, {useCallback, useState, useEffect} from 'react';
+import {Link, useHistory} from 'react-router-dom';
+import './signIn.css';
+import { fetchSignIn } from '../../redux/actions/userAction';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+
 function Index() {
   const {replace, push} = useHistory()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
-  const [loading, setLoading] = useState(false)
 
-  const _handleSubmit = useCallback(async () => {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+  const {loading, loginSuccess, error, errorMsg } = user;
+
+  const _handleSubmit = () => {
     // callback
     if (email.length > 2 && password.length > 2) {
-      setLoading(true)
-      const {statusCode, data} = await Api.postRequest('/api/user/signin', {
-        email,
+      dispatch(fetchSignIn({email, password}));
+    }
+  }
 
-        password,
-      })
-      setLoading(false)
-      if (statusCode === 400 || statusCode === 500 || statusCode === 403) {
-        setLoading(false)
-        alert(data)
-        return
-      }
-      const {token} = JSON.parse(data)
-      setToken(token)
+  useEffect(() => {
+    if (loginSuccess) {
       replace('/')
     }
-  }, [email, password, replace])
+  }, [loginSuccess, replace])
+
+  useEffect(() => {
+    if (error) {
+      alert(errorMsg)
+    }
+  }, [error, errorMsg])
+
+
+  console.log("user",user);
 
   if (loading) return <h1>Loading.....</h1>
   return (
@@ -45,12 +51,12 @@ function Index() {
             }}
           >
             <div style={{cursor: 'pointer'}} onClick={() => push('/')}>
-              <i class="fas fa-arrow-circle-left fa-5x"></i>
+              <i className="fas fa-arrow-circle-left fa-5x"></i>
             </div>
             <p>Sign In</p>
           </div>
 
-          <label for="email">Email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="lname"
@@ -59,7 +65,7 @@ function Index() {
             value={email}
             onChange={e => setEmail(e.target.value)}
           />
-          <label for="password">Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="lname"
@@ -74,7 +80,7 @@ function Index() {
           </Link>
           <br />
 
-          <input type="submit" value="Sign in" onClick={_handleSubmit} />
+          <input type="submit" value="Sign in" onClick={()=>_handleSubmit()} />
         </div>
       </div>
     </div>

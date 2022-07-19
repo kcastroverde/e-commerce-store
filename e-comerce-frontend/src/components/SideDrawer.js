@@ -45,7 +45,7 @@ const SideDrawer = ({show, click}) => {
           <Link to="/">Shop</Link>
         </li>
 
-        {!user.userInfo.isLogin ? (
+        {!user.loginSuccess ? (
           <li>
             <Link to="/signin">Login</Link>
           </li>

@@ -1,19 +1,22 @@
-import './HomeScreen.css'
-import {useEffect} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import './HomeScreen.css';
+import {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 
 // Components
-import Product from '../components/Product'
+import Product from '../components/Product';
 
 //Actions
-import { fetchProducts } from '../redux/actions/productActions'
+import { fetchProducts } from '../redux/actions/productActions';
 
 
 const HomeScreen = () => {
   const dispatch = useDispatch()
 
   const getProducts = useSelector(state => state.product)
+  const user = useSelector(state => state.user)
+  console.log("user", user)
   const {products, loading, error} = getProducts
+  
 
   useEffect(() => {
     dispatch(fetchProducts())

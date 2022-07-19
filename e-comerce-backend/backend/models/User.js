@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const { post } = require('../routes/productRoutes')
+
 
 const userSchema = new mongoose.Schema(
   {

@@ -36,12 +36,12 @@ const signInUser = async (req, res) => {
 
     if (same) {
       if(!storeId){
-        return sendResponseError(400, 'You have to Sign up first !', res)
+        return sendResponseError(400, 'Store error!', res)
       }
       if(user.storeId == storeId){
       let token = newToken(user, storeId)
       console.log("signed in")
-      return res.status(200).send({status: 'ok', token})
+      return res.status(200).send({status: 'ok', token, user})
       }
         return sendResponseError(400, 'You are not authorized to access this store', res)
       

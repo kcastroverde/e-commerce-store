@@ -42,12 +42,12 @@ function Index() {
             }}
           >
             <div style={{cursor: 'pointer'}} onClick={() => push('/')}>
-              <i class="fas fa-arrow-circle-left fa-5x"></i>
+              <i className="fas fa-arrow-circle-left fa-5x"></i>
             </div>
             <p>Signup</p>
           </div>
 
-          <label for="fname">Full Name</label>
+          <label htmlFor="fname">Full Name</label>
           <input
             type="text"
             id="fname"
@@ -57,7 +57,7 @@ function Index() {
             onChange={e => setFullName(e.target.value)}
           />
 
-          <label for="email">Email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="lname"
@@ -66,7 +66,7 @@ function Index() {
             value={email}
             onChange={e => setEmail(e.target.value)}
           />
-          <label for="password">Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="lname"

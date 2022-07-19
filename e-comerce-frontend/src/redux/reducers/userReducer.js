@@ -1,15 +1,13 @@
 const USER_INITIAL_STATE = {
-  userInfo: {
-    isLogin: false,
     loading: false,
     error : false,
     errorMsg: '',
     userDetails: [],
-  },
+    loginSuccess: false,
 }
 
-const userReducer = (state = USER_INITIAL_STATE, payload) => {
-  switch (payload.type) {
+const userReducer = (state = USER_INITIAL_STATE, action) => {
+  switch (action.type) {
     case 'REQUEST_USER_DETAILS':
       return {
         ...state,
@@ -19,18 +17,27 @@ const userReducer = (state = USER_INITIAL_STATE, payload) => {
       return {
         ...state,
         loading: false,
-        userDetails: payload.payload,
+        loginSuccess: true,
+        userDetails: action.payload.userDetails,
+        error: false,
+        errorMsg: '',
       }
     case 'ERROR_USER_DETAILS':
       return {
         ...state,
         loading: false,
         error: true,
-        errorMsg: payload.payload,
+        errorMsg: action.payload,
       }
     case 'LOG_OUT_USER':
       return {
-        USER_INITIAL_STATE
+        ...state,
+        loading: false,
+        loginSuccess: false,
+        userDetails: [],
+        error: false,
+        errorMsg: '',
+        
       }
     default:
       return state

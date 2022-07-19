@@ -1,4 +1,4 @@
-import axios from 'axios'
+
 import {Api} from '../../utils/Api'
 import {convertToCartData} from '../../utils/utils.function'
 
@@ -25,7 +25,7 @@ const updateCart = payload => ({
 export const fetchCart = () => async dispatch => {
   dispatch(requestCart());
   try {
-    const {data} = await Api.getCart();
+    const data = await Api.getCart();
     const convertTocart = convertToCartData(data);
     dispatch(receiveCart(convertTocart));
   }

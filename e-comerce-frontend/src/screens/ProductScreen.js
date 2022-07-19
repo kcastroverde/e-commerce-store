@@ -1,28 +1,39 @@
-import './ProductScreen.css'
-import {useState, useEffect} from 'react'
-import {useSelector, useDispatch} from 'react-redux'
+import './ProductScreen.css';
+import {useState, useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 
 // Actions
-import {addToCart, removeFromCart} from '../redux/actions/cartActions'
+import {addToCart, removeFromCart} from '../redux/actions/cartActions';
+import {fetchProducts} from '../redux/actions/productActions';
 
 
 const ProductScreen = ({match, history}) => {
-  const [qty, setQty] = useState(1)
-  const user = useSelector(state => state.user)
-  const dispatch = useDispatch()
+  const [qty, setQty] = useState(1);
+  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  const [product, setProduct] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const productDetails = useSelector(state => state.getProductDetails)
-  const {loading, error, product} = productDetails
+  const productDetails = useSelector(state => state.product);
+  const {initialLoad, error, products} = productDetails;
 
   useEffect(() => {
-    if (product && match.params.id !== product._id) {
-      dispatch()
+    if(initialLoad){
+      dispatch(fetchProducts());
     }
-  }, [dispatch, match, product])
+  }, [dispatch], [initialLoad]);
+
+  useEffect(() => {
+    if (!initialLoad && match.params.id !== products._id) {
+      const product = products.find(p => p._id === match.params.id)
+      setProduct(product);
+      setLoading(false);
+    }
+  }, [match, products, initialLoad, dispatch]);
 
   const addToCartHandler = () => {
-    if (user.userInfo.isLogin) {
-      dispatch(addToCart(product._id, qty))
+    if (user.loginSuccess) {
+      dispatch(addToCart(products._id, qty))
       history.push(`/cart`)
       return
     } else {
@@ -37,6 +48,7 @@ const ProductScreen = ({match, history}) => {
       ) : error ? (
         <h2>{error}</h2>
       ) : (
+
         <>
           <div className="productscreen__left">
             <div className="left__image">

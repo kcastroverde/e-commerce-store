@@ -21,7 +21,7 @@ const Navbar = ({click}) => {
   const _handleLogout = () => {
     // console.log('click')
 
-    logOut()
+    dispatch(logOut())
     history.push('/')
   }
 
@@ -45,7 +45,7 @@ const Navbar = ({click}) => {
           <Link to="/">Shop</Link>
         </li>
 
-        {!user.userInfo.isLogin ? (
+        {!user.loginSuccess ? (
           <li>
             <Link to="/signin">Login</Link>
           </li>

@@ -3,6 +3,7 @@ const PRODUCTS_INITAL_STATE = {
   loading: false,
   error: false,
   errorMsg: '',
+  initialLoad: true,
 }
 
 const productsReducer = (state = PRODUCTS_INITAL_STATE, payload) => {
@@ -17,6 +18,7 @@ const productsReducer = (state = PRODUCTS_INITAL_STATE, payload) => {
         ...state,
         loading: false,
         products: payload.payload.products,
+        initialLoad: false,
       }
     case 'ERROR_PRODUCTS':
       return {

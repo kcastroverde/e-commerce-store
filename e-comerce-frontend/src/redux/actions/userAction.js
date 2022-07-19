@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import { Api } from "../../utils/Api";
 
 const requestUser = () => ({
@@ -7,7 +7,7 @@ const requestUser = () => ({
 
 const receiveUser = payload => ({
   type: "RECEIVE_USER_DETAILS",
-  payload: payload,
+  payload
 });
 
 const errorUser = payload => ({
@@ -32,10 +32,13 @@ export const getUserDetails = () => async dispatch => {
 
 }
 
-export const fetchSignIn = (email, password) => async dispatch => {
+export const fetchSignIn = ({email, password}) => async dispatch => {
   try {
-    const { data } = await Api.sigIn(email, password);
-    dispatch(receiveUser(data));
+    const  data  = await Api.sigIn({email, password});
+    console.log("data", data);
+    dispatch(receiveUser({
+      userDetails: data,
+    }));
   }
   catch (error) {
     dispatch(errorUser(error));

@@ -7,11 +7,8 @@ const {
 const {verifyUser} = require('../middleware/middleware')
 const router = express.Router()
 
-router
-  .route('/')
-  .get([verifyUser], getCartProducts)
-  .post([verifyUser], addProductInCart)
-
-router.route('/:id').delete([verifyUser], deleteProductInCart)
+router.get('/', verifyUser, getCartProducts)
+router.post('/add', verifyUser, addProductInCart)
+router.post('/delete', verifyUser, deleteProductInCart)
 
 module.exports = router
