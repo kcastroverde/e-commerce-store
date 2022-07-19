@@ -1,4 +1,4 @@
-export const convertToCartData = carts => {
+export const convertToCartData = (carts)=> {
   return carts.map(c => {
     return {
       product: c.productId._id,

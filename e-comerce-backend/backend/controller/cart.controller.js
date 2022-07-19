@@ -7,53 +7,61 @@ const getCartProducts = async (req, res) => {
     return res.status(200).send({status: 'ok', carts})
   } catch (err) {
     console.log(err)
-    return sendResponseError(500, `Error ${err}`, res)
+    return res.status(500).send({status: 'error', err})
   }
 }
 
 const addProductInCart = async (req, res) => {
-  const {productId, count} = req.body
   try {
-    const cart = await Cart.findOneAndUpdate(
-      {productId},
-      {productId, count, userId: req.user._id},
-      {upsert: true},
-    )
+    const {productId, count} = req.body
+    const cart = new Cart({
+      userId: req.user._id,
+      productId,
+      count
+    })
+    await cart.save()
     console.log("cart add")
-    return res.status(201).send({status: 'ok', cart})
+    return res.status(200).send({status: 'ok', cart})
   } catch (err) {
     console.log(err)
-    return sendResponseError(500, `Error ${err}`, res)
+    return res.status(500).send({status: 'error', err})
   }
 }
 
 
 const deleteProductInCart = async (req, res) => {
-  const {productId} = req.body
   try {
-    const cart = await Cart.findOneAndDelete({productId})
+    const {productId} = req.body
+    const cart = await Cart.deleteOne({productId})
     console.log("cart delete")
-    return res.status(200).send({status: 'ok', cart})
+    return res.status(200).send({status: 'ok', cart })
   } catch (err) {
     console.log(err)
-    return sendResponseError(500, `Error ${err}`, res)
+    return res.status(500).send({status: 'error', err})
   }
 }
 
 const modifyProductInCart = async (req, res) => {
   const {productId, count} = req.body
   try {
-    const cart = await Cart.findOneAndUpdate(
-      {productId},
-      {productId, count, userId: req.user._id},
-      {upsert: true},
-    )
+    const cart = await Cart.updateOne({productId}, {count})
     console.log("cart modify")
-    return res.status(201).send({status: 'ok', cart})
+    return res.status(200).send({status: 'ok', cart})
   } catch (err) {
     console.log(err)
-    return sendResponseError(500, `Error ${err}`, res)
+    return res.status(500).send({status: 'error', err})
   }
 }
 
-module.exports = {addProductInCart, deleteProductInCart, getCartProducts}
+const clearCart = async (req, res) => {
+  try {
+    const cart = await Cart.deleteMany({userId: req.user._id})
+    console.log("cart clear")
+    return res.status(200).send({status: 'ok', cart})
+  } catch (err) {
+    console.log(err)
+    return res.status(500).send({status: 'error', err})
+  }
+}
+
+module.exports = {addProductInCart, deleteProductInCart, getCartProducts, modifyProductInCart, clearCart}

@@ -1,8 +1,9 @@
 const CART_INITIAL_STATE = {
-  cart: [],
+  products: [],
   loading: false,
   error: false,
   errorMsg: '',
+  cartLoaded: false,
 }
 
 const cartReducer = (state = CART_INITIAL_STATE, payload) => {
@@ -16,12 +17,18 @@ const cartReducer = (state = CART_INITIAL_STATE, payload) => {
       return {
         ...state,
         loading: false,
-        cart: payload.payload,
+        cartLoaded: true,
+        error: false,
+        errorMsg: '',
+        products: payload.payload,
       }
     case 'UPDATE_CART':
       return {
         ...state,
-        cart: payload.payload,
+        loading: false,
+        cartLoaded: true,
+        error: false,
+        products: payload.payload,
       }
     case 'ERROR_CART':
       return {

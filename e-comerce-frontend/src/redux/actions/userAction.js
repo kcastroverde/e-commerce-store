@@ -1,5 +1,6 @@
 
 import { Api } from "../../utils/Api";
+import { removeToken } from "../../utils/localstorage";
 
 const requestUser = () => ({
   type: "REQUEST_USER_DETAILS",
@@ -23,8 +24,10 @@ const logOutUser = () => ({
 export const getUserDetails = () => async dispatch => {
   dispatch(requestUser());
   try {
-    const { data } = await Api.getUser();
-    dispatch(receiveUser(data));
+    const data = await Api.getUser();
+    dispatch(receiveUser({
+      userDetails: data
+    }));
   }
   catch (error) {
     dispatch(errorUser(error));
@@ -57,5 +60,5 @@ export const fetchSignUp = (name, email, password) => async dispatch => {
 
 export const logOut = () => async dispatch => {
   dispatch(logOutUser());
-  window.localStorage.removeItem("token");
+  removeToken();
 }

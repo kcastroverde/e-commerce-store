@@ -9,6 +9,7 @@ import Product from '../components/Product';
 import { fetchProducts } from '../redux/actions/productActions';
 
 
+
 const HomeScreen = () => {
   const dispatch = useDispatch()
 
@@ -22,9 +23,9 @@ const HomeScreen = () => {
     dispatch(fetchProducts())
   }, [dispatch])
 
-  // useEffect(() => {
-  //   dispatch(setUserDeatils())
-  // }, [dispatch])
+
+
+
   console.log(getProducts)
   return (
     <div className="homescreen">

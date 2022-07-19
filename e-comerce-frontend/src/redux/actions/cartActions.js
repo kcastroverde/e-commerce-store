@@ -26,7 +26,8 @@ export const fetchCart = () => async dispatch => {
   dispatch(requestCart());
   try {
     const data = await Api.getCart();
-    const convertTocart = convertToCartData(data);
+    console.log("data", data);
+    const convertTocart = convertToCartData(data.carts);
     dispatch(receiveCart(convertTocart));
   }
   catch (error) {
@@ -36,8 +37,9 @@ export const fetchCart = () => async dispatch => {
 
 export const addToCart = (productId, quantity) => async dispatch => {
   try {
-    const {data} = await Api.addToCart(productId, quantity);
-    const convertTocart = convertToCartData(data);
+    console.log("productId", productId);
+    const data = await Api.addToCart(productId, quantity);
+    const convertTocart = convertToCartData(data.carts);
     dispatch(updateCart(convertTocart));
   }
   catch (error) {
@@ -45,9 +47,32 @@ export const addToCart = (productId, quantity) => async dispatch => {
   }
 }
 
-export const removeFromCart = (productId, quantity) => async dispatch => {
+export const removeFromCart = (productId) => async dispatch => {
   try {
-    const {data} = await Api.removeFromCart(productId, quantity);
+    console.log("productId", productId);
+    const data = await Api.removeFromCart(productId);
+    const convertTocart = convertToCartData(data.carts);
+    dispatch(updateCart(convertTocart));
+  }
+  catch (error) {
+    dispatch(errorCart(error));
+  }
+}
+
+export const modifyCart = (productId, quantity) => async dispatch => {
+  try {
+    const data = await Api.modifyCart(productId, quantity);
+    const convertTocart = convertToCartData(data.carts);
+    dispatch(updateCart(convertTocart));
+  }
+  catch (error) {
+    dispatch(errorCart(error));
+  }
+}
+
+export const clearCart = () => async dispatch => {
+  try {
+    const data = await Api.clearCart();
     const convertTocart = convertToCartData(data);
     dispatch(updateCart(convertTocart));
   }

@@ -15,7 +15,7 @@ const ProductScreen = ({match, history}) => {
   const [loading, setLoading] = useState(true);
 
   const productDetails = useSelector(state => state.product);
-  const {initialLoad, error, products} = productDetails;
+  const {initialLoad, error, products, errorMsg} = productDetails;
 
   useEffect(() => {
     if(initialLoad){
@@ -33,7 +33,12 @@ const ProductScreen = ({match, history}) => {
 
   const addToCartHandler = () => {
     if (user.loginSuccess) {
-      dispatch(addToCart(products._id, qty))
+      console.log("productscree", product._id)
+      dispatch(addToCart(product._id, qty))
+      if(error){
+        alert(errorMsg);
+        return;
+      }
       history.push(`/cart`)
       return
     } else {

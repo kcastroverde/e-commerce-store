@@ -1,14 +1,19 @@
-export const token_key = 'E_COMMERCE_TOKEN'
+import { STORE_ID } from "./Api"
 
-export const setToken = (token, storeId) => {
-  window.localStorage.setItem(`token_store${storeId}`, token)
+export const setToken = (token) => {
+  window.localStorage.setItem(`token_store${STORE_ID}`, token)
 }
 
-export const getToken = (storeId) => {
-  let token = window.localStorage.getItem(`token_store${storeId}`)
+export const getToken = () => {
+  let token = window.localStorage.getItem(`token_store${STORE_ID}`)
   if (!!token) return token
   return false
 }
+
+export const removeToken = () => {
+  window.localStorage.removeItem(`token_store${STORE_ID}`)
+}
+
 
 
 

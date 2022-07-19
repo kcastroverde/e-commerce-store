@@ -7,50 +7,51 @@ import {Link, useHistory} from 'react-router-dom'
 import CartItem from '../components/CartItem'
 
 // Actions
-import {addToCart, removeFromCart} from '../redux/actions/cartActions'
+import {addToCart, modifyCart, removeFromCart} from '../redux/actions/cartActions'
 
 
 const CartScreen = () => {
   const dispatch = useDispatch()
 
   const cart = useSelector(state => state.cart)
-
-  const {loginInfo} = false
-
-  const {cartItems} = cart
+  const user = useSelector(state => state.user)
+  const {loginSuccess} = user
+  const {cartLoaded, products} = cart
 
   const qtyChangeHandler = (id, qty) => {
-    dispatch(addToCart(id, qty))
+    console.log("triger data",id, qty)
+    dispatch(modifyCart(id, qty))
   }
 
   const removeFromCartHandler = item => {
-    dispatch(removeFromCart({pId: item.product, _id: item._id}))
+    console.log("remove data", item)
+    dispatch(removeFromCart(item._id))
   }
 
   const getCartCount = () => {
-    return cartItems.reduce((qty, item) => Number(item.qty) + qty, 0)
+    return products.reduce((qty, item) => Number(item.qty) + qty, 0)
   }
 
   const getCartSubTotal = () => {
-    return cartItems
+    return products
       .reduce((price, item) => price + item.price * item.qty, 0)
       .toFixed(2)
   }
 
-  if (loginInfo.loading) return <h1>Loading.....</h1>
-  else if (!loginInfo.loading && loginInfo.isLogin)
+  if (!cartLoaded) return <h1>Loading.....</h1>
+  else if (cartLoaded && loginSuccess)
     return (
       <>
         <div className="cartscreen">
           <div className="cartscreen__left">
             <h2>Shopping Cart</h2>
 
-            {cartItems.length === 0 ? (
+            {products.length === 0 ? (
               <div>
                 Your Cart Is Empty <Link to="/">Go Back</Link>
               </div>
             ) : (
-              cartItems.map(item => (
+              products.map(item => (
                 <CartItem
                   key={item.product}
                   item={item}

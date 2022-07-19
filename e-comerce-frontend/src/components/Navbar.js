@@ -1,8 +1,10 @@
 import './Navbar.css'
 import {Link, useHistory} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import {useMemo} from 'react'
-import { logOut } from '../redux/actions/userAction'
+import {useEffect} from 'react'
+import { getUserDetails, logOut } from '../redux/actions/userAction'
+import { getToken } from '../utils/localstorage'
+import { fetchCart } from '../redux/actions/cartActions'
 
 
 const Navbar = ({click}) => {
@@ -12,18 +14,33 @@ const Navbar = ({click}) => {
   const dispatch = useDispatch()
   // console.log({user})
 
-  const {cartItems} = cart
+  const {products, cartLoaded} = cart
+  const {loginSuccess} = user
+  console.log(cart)
 
   const getCartCount = () => {
-    return cartItems.reduce((qty, item) => Number(item.qty) + qty, 0)
+    return products.reduce((qty, item) => Number(item.qty) + qty, 0)
   }
 
   const _handleLogout = () => {
     // console.log('click')
-
     dispatch(logOut())
     history.push('/')
   }
+
+  useEffect(() => {
+    const token = getToken();
+    
+    if(token)
+    dispatch(getUserDetails());
+  }, [dispatch])
+
+  useEffect(() => {
+    if(loginSuccess){
+      dispatch(fetchCart())
+    }
+  }, [dispatch, loginSuccess])
+
 
   return (
     <nav className="navbar">
@@ -36,7 +53,9 @@ const Navbar = ({click}) => {
           <Link to="/cart" className="cart__link">
             <i className="fas fa-shopping-cart"></i>
             <span>
-              Cart <span className="cartlogo__badge">{getCartCount()}</span>
+              Cart <span className="cartlogo__badge">{
+              cartLoaded? getCartCount(): 0
+              }</span>
             </span>
           </Link>
         </li>

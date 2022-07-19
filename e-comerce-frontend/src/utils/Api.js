@@ -3,7 +3,7 @@ import {getToken, setToken} from './localstorage'
 
 
 const API = "http://localhost:5000/api";
-const STORE_ID= "62d5b22ee529916689066b8c"
+export const STORE_ID= "62d5b22ee529916689066b8c"
 //const STORE_ID= "62d5b221e529916689066b89"
 
 const getUser = async () => {
@@ -24,14 +24,14 @@ const sigIn = async ({email, password}) => {
     storeId: STORE_ID
   })
   //save token to localstorage
-  setToken(data.token, STORE_ID)
+  setToken(data.token)
   return data
 }
 
 const sigUp = async (name, email, password, storeId) => {
   const {data} = await axios.post(`${API}/user/signup`, {name, email, password, storeId})
   //save token to localstorage
-  setToken(data.token, storeId)
+  setToken(data.token)
   return data
 }
 
@@ -118,17 +118,17 @@ const addToCart = async (productId, quantity) => {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`
   }
-  const {data} = await axios.post(`${API}/cart/add`, {productId, quantity}, {headers})
+  const {data} = await axios.post(`${API}/cart/add`, {productId, count:quantity}, {headers})
   return data
 }
 
-const deleteFromCart = async (productId, quantity) => {
+const removeFromCart = async (productId) => {
   const token = getToken()
   const headers = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`
   }
-  const {data} = await axios.post(`${API}/cart/delete`, {productId, quantity}, {headers})
+  const {data} = await axios.post(`${API}/cart/delete`, {productId}, {headers})
   return data
 }
 
@@ -139,12 +139,30 @@ const getCart = async () => {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`
   }
-  const {data} = await axios.get(`${API}/cart/get`, {headers})
+  const {data} = await axios.get(`${API}/cart/`, {headers})
   return data
 }
 
 
+const clearCart = async () => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.post(`${API}/cart/clear`, {}, {headers})
+  return data
+}
 
+const modifyCart = async (productId, quantity) => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.post(`${API}/cart/modify`, {productId, quantity}, {headers})
+  return data
+}
 
 
 export const Api = {
@@ -162,6 +180,8 @@ export const Api = {
   createCategory,
   deleteCategory,
   addToCart,
-  deleteFromCart,
-  getCart
+  removeFromCart,
+  getCart,
+  clearCart,
+  STORE_ID
 }
