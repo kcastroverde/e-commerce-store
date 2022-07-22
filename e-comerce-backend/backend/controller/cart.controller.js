@@ -1,3 +1,4 @@
+const { findById } = require('../models/Cart')
 const Cart = require('../models/Cart')
 
 const getCartProducts = async (req, res) => {
@@ -20,8 +21,9 @@ const addProductInCart = async (req, res) => {
       count
     })
     await cart.save()
+    const carts = await Cart.find({userId: req.user._id}).populate('productId')
     console.log("cart add")
-    return res.status(200).send({status: 'ok', cart})
+    return res.status(200).send({status: 'ok', carts})
   } catch (err) {
     console.log(err)
     return res.status(500).send({status: 'error', err})
@@ -31,22 +33,24 @@ const addProductInCart = async (req, res) => {
 
 const deleteProductInCart = async (req, res) => {
   try {
-    const {productId} = req.body
-    const cart = await Cart.deleteOne({productId})
-    console.log("cart delete")
-    return res.status(200).send({status: 'ok', cart })
+    const cart = await Cart.deleteOne({_id: req.params.id})
+    const carts = await Cart.find({userId: req.user._id}).populate('productId')
+    console.log("cart delete", cart)
+    return res.status(200).send({status: 'ok', carts})
   } catch (err) {
     console.log(err)
     return res.status(500).send({status: 'error', err})
   }
+
 }
 
 const modifyProductInCart = async (req, res) => {
   const {productId, count} = req.body
   try {
-    const cart = await Cart.updateOne({productId}, {count})
+    const cart = await Cart.updateOne({productId, count})
     console.log("cart modify")
-    return res.status(200).send({status: 'ok', cart})
+    const carts = await Cart.find({userId: req.user._id}).populate('productId')
+    return res.status(200).send({status: 'ok', carts})
   } catch (err) {
     console.log(err)
     return res.status(500).send({status: 'error', err})
@@ -55,7 +59,7 @@ const modifyProductInCart = async (req, res) => {
 
 const clearCart = async (req, res) => {
   try {
-    const cart = await Cart.deleteMany({userId: req.user._id})
+    const cart = await Cart.deleteMany({userId: req.user.id})
     console.log("cart clear")
     return res.status(200).send({status: 'ok', cart})
   } catch (err) {

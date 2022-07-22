@@ -16,6 +16,7 @@ import SignIn from './screens/SignIn'
 import {useDispatch} from 'react-redux'
 import {fetchCart} from './redux/actions/cartActions'
 import { getUserDetails } from './redux/actions/userAction'
+import Checkout from './screens/Checkout'
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
           <Route exact path="/cart" component={CartScreen} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/signin" component={SignIn} />
+          <Route exact path="/checkout" component={Checkout}/>
         </Switch>
       </main>
     </Router>

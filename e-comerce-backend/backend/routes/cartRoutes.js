@@ -11,7 +11,7 @@ const router = express.Router()
 
 router.get('/', verifyUser, getCartProducts)
 router.post('/add', verifyUser, addProductInCart)
-router.post('/delete', verifyUser, deleteProductInCart)
+router.post('/delete/:id', verifyUser, deleteProductInCart)
 router.post('/modify', verifyUser, modifyProductInCart)
 router.post('/clear', verifyUser, clearCart)
 

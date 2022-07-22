@@ -22,6 +22,10 @@ const updateCart = payload => ({
   payload: payload,
 })
 
+const logoutcart = () => ({
+  type: "LOGOUT_CART",
+})
+
 export const fetchCart = () => async dispatch => {
   dispatch(requestCart());
   try {
@@ -80,3 +84,13 @@ export const clearCart = () => async dispatch => {
     dispatch(errorCart(error));
   }
 }
+
+export const logoutCart = () => async dispatch => {
+  try {
+    dispatch(logoutcart());
+  }
+  catch (error) {
+    dispatch(errorCart(error));
+  }
+}
+

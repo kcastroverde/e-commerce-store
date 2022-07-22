@@ -128,7 +128,7 @@ const removeFromCart = async (productId) => {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`
   }
-  const {data} = await axios.post(`${API}/cart/delete`, {productId}, {headers})
+  const {data} = await axios.post(`${API}/cart/delete/${productId}`, {}, {headers})
   return data
 }
 
@@ -160,9 +160,23 @@ const modifyCart = async (productId, quantity) => {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`
   }
-  const {data} = await axios.post(`${API}/cart/modify`, {productId, quantity}, {headers})
+  const {data} = await axios.post(`${API}/cart/modify`, {
+    productId, 
+    count: quantity
+  }, {headers})
   return data
 }
+
+const getOrders = async () => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.get(`${API}/orders/`, {headers})
+  return data
+}
+
 
 
 export const Api = {
@@ -183,5 +197,7 @@ export const Api = {
   removeFromCart,
   getCart,
   clearCart,
+  modifyCart,
+  getOrders,
   STORE_ID
 }

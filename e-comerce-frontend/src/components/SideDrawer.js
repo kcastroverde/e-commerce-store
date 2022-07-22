@@ -12,10 +12,10 @@ const SideDrawer = ({show, click}) => {
   const dispatch = useDispatch()
 
   const cart = useSelector(state => state.cart)
-  const {cartItems} = cart
+  const {products} = cart
 
   const getCartCount = () => {
-    return cartItems.reduce((qty, item) => Number(item.qty) + qty, 0)
+    return products.reduce((qty, item) => Number(item.qty) + qty, 0)
   }
 
   if (show) {

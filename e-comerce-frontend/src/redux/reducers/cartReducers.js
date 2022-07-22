@@ -37,6 +37,15 @@ const cartReducer = (state = CART_INITIAL_STATE, payload) => {
         error: true,
         errorMsg: payload.payload,
       }
+    case 'LOGOUT_CART':
+      return {
+        ...state,
+        loading: false,
+        cartLoaded: false,
+        error: false,
+        errorMsg: '',
+        products: [],
+      }
     default:
       return state
   }

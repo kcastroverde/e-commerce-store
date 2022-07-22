@@ -7,12 +7,12 @@ import {Link, useHistory} from 'react-router-dom'
 import CartItem from '../components/CartItem'
 
 // Actions
-import {addToCart, modifyCart, removeFromCart} from '../redux/actions/cartActions'
+import { modifyCart, removeFromCart} from '../redux/actions/cartActions'
 
 
 const CartScreen = () => {
   const dispatch = useDispatch()
-
+  const {replace, push } = useHistory()
   const cart = useSelector(state => state.cart)
   const user = useSelector(state => state.user)
   const {loginSuccess} = user
@@ -37,9 +37,14 @@ const CartScreen = () => {
       .reduce((price, item) => price + item.price * item.qty, 0)
       .toFixed(2)
   }
+  const navigateToCheckout = () => {
+    products.length > 0 ? replace('/checkout') : alert('Cart is empty')
+  }
+
+  console.log("cart", cart)
 
   if (!cartLoaded) return <h1>Loading.....</h1>
-  else if (cartLoaded && loginSuccess)
+  else if (cartLoaded)
     return (
       <>
         <div className="cartscreen">
@@ -68,7 +73,11 @@ const CartScreen = () => {
               <p>${getCartSubTotal()}</p>
             </div>
             <div>
-              <button>Proceed To Checkout</button>
+              <button
+              onClick={navigateToCheckout}
+              >
+                
+                Proceed To Checkout</button>
             </div>
           </div>
         </div>
