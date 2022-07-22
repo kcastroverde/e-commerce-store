@@ -1,0 +1,13 @@
+.adminsite{
+    max-width: 1300px;
+    margin: 1rem auto;
+    display: flex;
+    height: 100vh;
+    margin-top: 0px;
+}
+
+.sideBar{
+    border: 1px solid #000;
+    width: 20%;
+
+}

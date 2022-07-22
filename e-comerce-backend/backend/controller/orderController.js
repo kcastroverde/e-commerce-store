@@ -48,15 +48,17 @@ const getOrdersByStoreAndUser = async (req, res) => {
 const createOrderByUser = async (req, res) => {
    
     try{
-        console.log("order-Body", req.body);
-        const  {fullName, address, zipCode, city, country}= req.body
+    
+        const  {fullName, address, zipCode, city, country, state}= req.body
         const user = await User.findById(req.user)
-        console.log("user", user);
-        if(user.fullName === fullName||
-            user.address === address||
-            user.zipCode === zipCode||
-            user.city === city||
-            user.country === country)
+     
+        if(user.fullName === fullName&&
+            user.address === address&&
+            user.zipCode === zipCode&&
+            user.city === city&&
+            user.country === country&&
+            user.state === state
+            )
             {
                 const order = await Order.create({
                     userId: user._id,
@@ -76,6 +78,7 @@ const createOrderByUser = async (req, res) => {
                 user.zipCode = zipCode;
                 user.city = city;
                 user.country = country;
+                user.state = state;
                 await user.save();
                 console.log("user update");
                 const order = await Order.create({

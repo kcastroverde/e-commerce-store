@@ -7,7 +7,7 @@ import { addOrder, createOrder } from "../redux/actions/orderActions";
 import "./Checkout.css";
 
 const Checkout = () => {
-  const userInfo = useSelector((state) => state.user.userDetails);
+  const userInfo = useSelector((State) => State.user.userDetails);
 
   const { fullName, address, country, city, zipCode, state } = userInfo;
 
@@ -24,7 +24,7 @@ const Checkout = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector((State) => State.cart);
   const cartItems = useMemo(() => cart.products, [cart]);
   const [checkoutFull, setCheckoutFull] = useState(false);
 
@@ -40,27 +40,7 @@ const Checkout = () => {
 
 
 
-  useEffect(() => {
-    if (fullName) {
-      setAddress(...Address, fullName);
-    }
-    if (address) {
-      setAddress(...Address, address);
-    }
-    if (country) {
-      setAddress(...Address, country);
-    }
-    if (city) {
-      setAddress(...Address, city);
-    }
-    if (zipCode) {
-      setAddress(...Address, zipCode);
-    }
 
-    if(state){
-      setAddress(...Address, state);
-    }
-  }, [fullName, address, country, city, zipCode, state]);
 
   useEffect(() => {
     if(

@@ -6,6 +6,11 @@ const API = "http://localhost:5000/api";
 export const STORE_ID= "62d5b22ee529916689066b8c"
 //const STORE_ID= "62d5b221e529916689066b89"
 
+const getStore = async () => {
+  const {data} = await axios.get(`${API}/stores/${STORE_ID}`);
+  return data;
+}
+
 const getUser = async () => {
   const token = getToken();
   const headers = {
@@ -185,6 +190,7 @@ const createOrder = async (order) => {
     zipCode: order.Address.zipCode,
     city: order.Address.city,
     country: order.Address.country,
+    state: order.Address.state,
     total: order.total,
     products : order.cartItems.map(item => {
       return {
@@ -226,5 +232,6 @@ export const Api = {
   modifyCart,
   getOrders,
   STORE_ID,
-  createOrder
+  createOrder,
+  getStore
 }

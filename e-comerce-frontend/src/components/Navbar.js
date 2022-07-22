@@ -5,17 +5,19 @@ import {useEffect, useState} from 'react'
 import { getUserDetails, logOut } from '../redux/actions/userAction'
 import { getToken } from '../utils/localstorage'
 import { fetchCart, logoutCart } from '../redux/actions/cartActions'
+import { fetchStore } from '../redux/actions/storeActions'
 
 
 const Navbar = ({click}) => {
   const cart = useSelector(state => state.cart)
   const history = useHistory()
   const user = useSelector(state => state.user)
+  const store = useSelector(state => state.store)
   const dispatch = useDispatch()
   // console.log({user})
-
+  const {storeName, discount, StoreLoaded} = store
   const {products, cartLoaded} = cart
-  const {loginSuccess} = user
+  const {loginSuccess, userDetails} = user
 
 
   const getCartCount = () => {
@@ -32,8 +34,13 @@ const Navbar = ({click}) => {
   }
 
   useEffect(() => {
+    if(!StoreLoaded){
+    dispatch(fetchStore());
+    }
+  }, [dispatch, StoreLoaded])
+
+  useEffect(() => {
     const token = getToken();
-    
     if(token)
     dispatch(getUserDetails());
   }, [dispatch])
@@ -55,10 +62,24 @@ const Navbar = ({click}) => {
   return (
     <nav className="navbar">
       <div className="navbar__logo">
-        <h2>JSOM-E-COMERCE</h2>
+        <Link to="/">
+        <h2>{StoreLoaded?
+          storeName: 'loading...' 
+        }</h2>
+        </Link>
       </div>
 
       <ul className="navbar__links">
+      <li>
+          <Link to="/admin" className='admin__link'>
+            {loginSuccess? userDetails.role === "admin" ? 'Admin' : null : null}
+          </Link>
+        </li>
+        <li>
+          <Link to="/orders" className='orders__link'>
+            {loginSuccess? 'Orders' : null}
+          </Link>
+        </li>
         <li>
           <Link to="/cart" className="cart__link">
             <i className="fas fa-shopping-cart"></i>
