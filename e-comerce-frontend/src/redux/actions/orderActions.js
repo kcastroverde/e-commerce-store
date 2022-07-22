@@ -35,3 +35,14 @@ export const fetchOrder = () => async dispatch => {
         dispatch(errorOrder(error));
     }
 }
+
+export const createOrder = (order) => async dispatch => {
+    dispatch(requestOrder());
+    try {
+        const data = await Api.createOrder(order);
+        dispatch(receiveOrder(data));
+    }
+    catch (error) {
+        dispatch(errorOrder(error));
+    }
+}

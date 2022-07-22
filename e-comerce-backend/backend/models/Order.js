@@ -34,11 +34,7 @@ const orderSchema = mongoose.Schema(
         type: String,
         required: true
     },
-    totalInUsd:{
-        type: Number,
-        required: true
-    },
-    totalInToken:{
+    total:{
         type: Number,
         required: true
     },
@@ -46,10 +42,11 @@ const orderSchema = mongoose.Schema(
         type: String,
         required: true
     },
-    delivered:{
-        type: Boolean,
+    finalStatus:{
+        type: String,
+        value: ['pending', 'delivered', 'custodie'],
         required: true,
-        default: false,
+        default: 'pending',
     }
 },
 {

@@ -4,6 +4,8 @@ ORDER_INITIAL_STATE = {
     errorMsg: '',
     orderLoaded: false,
     orders: [],
+    savingOrder: false,
+    orderSaved: null,
 }
 
 const orderReducer = (state = ORDER_INITIAL_STATE, actions) => {
@@ -46,6 +48,18 @@ const orderReducer = (state = ORDER_INITIAL_STATE, actions) => {
                 errorMsg: '',
                 orders: [],
             }
+        case 'SAVING_ORDER':
+            return {
+                ...state,
+                savingOrder: true,
+            }   
+        case 'ORDER_SAVED':
+            return {
+                ...state,
+                savingOrder: false,
+                orderSaved: actions.payload,
+            }
+
         default:
             return state
     }

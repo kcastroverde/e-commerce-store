@@ -177,6 +177,18 @@ const getOrders = async () => {
   return data
 }
 
+const createOrder = async (order) => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.post(`${API}/orders/`, order, {headers})
+  return data
+}
+
+
+
 
 
 export const Api = {
@@ -199,5 +211,6 @@ export const Api = {
   clearCart,
   modifyCart,
   getOrders,
-  STORE_ID
+  STORE_ID,
+  createOrder
 }

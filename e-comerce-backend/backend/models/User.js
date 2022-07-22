@@ -28,13 +28,10 @@ const userSchema = new mongoose.Schema(
     fullName: {
       type: String,
     },
-    phone: {
-      type: String,
-    },
     address: {
       type: String,
     },
-    postalCode: {
+    zipCode: {
       type: String,
     },
     city: {

@@ -1,52 +1,109 @@
-import {useCallback, useMemo, useState} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {useHistory} from 'react-router'
-import {clearCart} from "../redux/actions/cartActions";
-import {addOrder} from "../redux/actions/orderActions";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
+import { clearCart } from "../redux/actions/cartActions";
+import { addOrder, createOrder } from "../redux/actions/orderActions";
 
-
-import './Checkout.css'
+import "./Checkout.css";
 
 const Checkout = () => {
-  const userInfo = useSelector(state => state.user.userDetails)
+  const userInfo = useSelector((state) => state.user.userDetails);
 
-  
-  const [Address, setAddress] = useState({})
-  const history = useHistory()
-  const dispatch = useDispatch()
+  const { fullName, address, country, city, zipCode, state } = userInfo;
 
-  const cart = useSelector(state => state.cart)
-  const cartItems = useMemo(() => cart.products, [cart])
-  console.log("cartItems", cartItems)
+  const [Address, setAddress] = useState({
+    fullName,
+    address,
+    country,
+    city,
+    zipCode,
+    state
+  });
+
+  const [token, setToken] = useState(1);
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const cart = useSelector((state) => state.cart);
+  const cartItems = useMemo(() => cart.products, [cart]);
+  const [checkoutFull, setCheckoutFull] = useState(false);
+  const handleOrden = () => {
+    if(checkoutFull){
+      const Order ={Address,cartItems};
+      dispatch(createOrder(Order));
+  }}
+
+  useEffect(() => {
+    if (fullName) {
+      setAddress(...Address, fullName);
+    }
+    if (address) {
+      setAddress(...Address, address);
+    }
+    if (country) {
+      setAddress(...Address, country);
+    }
+    if (city) {
+      setAddress(...Address, city);
+    }
+    if (zipCode) {
+      setAddress(...Address, zipCode);
+    }
+
+    if(state){
+      setAddress(...Address, state);
+    }
+  }, [fullName, address, country, city, zipCode, state]);
+
+  useEffect(() => {
+    if(
+      Address.fullName === "" || 
+      Address.address === "" || 
+      Address.country === "" || 
+      Address.city === "" || 
+      Address.zipCode === "" || 
+      Address.state === "" || 
+      Address.fullName === undefined || 
+      Address.address === undefined || 
+      Address.country === undefined || 
+      Address.city === undefined || 
+      Address.zipCode === undefined || 
+      Address.state === undefined){
+      setCheckoutFull(false);
+    }
+    else{
+      setCheckoutFull(true);
+    }
+  }, [fullName, address, country, city, zipCode, state, Address]);
+
+  const resetAddress = () => {
+    setAddress({
+      fullName: "",
+      address: "",
+      country: "",
+      city: "",
+      zipCode: "",
+      state: ""
+    });
+  }
 
   const getCartSubTotal = () => {
     return cartItems
       .reduce((price, item) => price + item.price * item.qty, 0)
-      .toFixed(2)
-  }
+      .toFixed(2);
+  };
 
-
-  function loadScript(src) {
-    return new Promise(resolve => {
-      const script = document.createElement('script')
-      script.src = src
-      script.onload = () => {
-        resolve(true)
-      }
-      script.onerror = () => {
-        resolve(false)
-      }
-      document.body.appendChild(script)
-    })
-  }
-
-
+  console.log("Address", Address);
+  console.log("fullCheckout", checkoutFull);
   return (
     <div className="Checkout">
       <div className="container">
         <div className="Checkout__header">
-          <h1 style={{flexGrow: 1}}>Shipping</h1>
-
+          <h1 style={{ flexGrow: 1 }}>Shipping</h1>
+          <button 
+          className='Checkout_testBtn'
+          onClick={resetAddress}
+          >clear checkout</button>
         </div>
 
         <p>Please enter your shipping details.</p>
@@ -61,9 +118,9 @@ const Checkout = () => {
                 className="field__input"
                 type="text"
                 id="lastname"
-                value={userInfo.fullName || Address.fullName}
+                value={Address.fullName}
                 onChange={(e) => {
-                    setAddress({...Address, fullName: e.target.value})
+                  setAddress({ ...Address, fullName: e.target.value });
                 }}
               />
             </label>
@@ -76,8 +133,10 @@ const Checkout = () => {
               className="field__input"
               type="text"
               id="address"
-              value={userInfo.Address||Address.address}
-              onChange={e => setAddress({...Address, address: e.target.value})}
+              value={Address.address}
+              onChange={(e) =>
+                setAddress({ ...Address, address: e.target.value })
+              }
             />
           </label>
           <label className="field">
@@ -87,11 +146,11 @@ const Checkout = () => {
             <input
               className="field__input"
               id="country"
-              value={userInfo.country||Address.country}
-              onChange={e => setAddress({...Address, country: e.target.value})}
-            >
-
-            </input>
+              value={Address.country}
+              onChange={(e) =>
+                setAddress({ ...Address, country: e.target.value })
+              }
+            ></input>
           </label>
           <div className="fields fields--3">
             <label className="field">
@@ -102,9 +161,9 @@ const Checkout = () => {
                 className="field__input"
                 type="text"
                 id="zipcode"
-                value={userInfo.zipcode||Address.zipcode}
-                onChange={e =>
-                  setAddress({...Address, zipcode: e.target.value})
+                value={Address.zipCode}
+                onChange={(e) =>
+                  setAddress({ ...Address, zipCode: e.target.value })
                 }
               />
             </label>
@@ -116,8 +175,10 @@ const Checkout = () => {
                 className="field__input"
                 type="text"
                 id="city"
-                value={userInfo.city||Address.city}
-                onChange={e => setAddress({...Address, city: e.target.value})}
+                value={Address.city}
+                onChange={(e) =>
+                  setAddress({ ...Address, city: e.target.value })
+                }
               />
             </label>
             <label className="field">
@@ -127,54 +188,63 @@ const Checkout = () => {
               <input
                 className="field__input"
                 id="state"
-                value={userInfo.state||Address.state}
-                onChange={e => setAddress({...Address, state: e.target.value})}
+                value={Address.state}
+                onChange={(e) =>
+                  setAddress({ ...Address, state: e.target.value })
+                }
               ></input>
             </label>
+            <label className="field">
+              <span className="field__label" htmlFor="phone">
+                token to use
+              </span>
+              <select
+              onChange={(e) =>{
+                setToken(e.target.value)
+              }}
+              >
+                <option value="1">1</option>
+                <option value="2">2</option>
+              </select>
+            </label>
+
           </div>
-<br/>
-<h1 style={{flexGrow: 1}}>Cart</h1>
-        {cartItems.map((item, index )=> (
+          <br />
+          <h1 style={{ flexGrow: 1 }}>Cart</h1>
+          {cartItems.map((item, index) => (
             <div className="fields fields--3" key={index}>
-            <label className="field">
-              <span className="field__label" htmlFor="zipcode">
-                Producto
-              </span>
-              <div
-                className="field__input">
-                    {item.name}
-                </div>
-            </label>
-            <label className="field">
-              <span className="field__label" htmlFor="city">
-                precio
-              </span>
-              <div
-                className="field__input">
-                    {item.price}
-                </div>
-            </label>
-            <label className="field">
-              <span className="field__label" htmlFor="state">
-                qt
-              </span>
-              <div
-                className="field__input">
-                    {item.qty}
-                </div>
-            </label>
-          </div>
-                ))}
-
-
+              <label className="field">
+                <span className="field__label" htmlFor="zipcode">
+                  Producto
+                </span>
+                <div className="field__input">{item.name}</div>
+              </label>
+              <label className="field">
+                <span className="field__label" htmlFor="city">
+                  precio
+                </span>
+                <div className="field__input">{item.price}</div>
+              </label>
+              <label className="field">
+                <span className="field__label" htmlFor="state">
+                  qt
+                </span>
+                <div className="field__input">{item.qty}</div>
+              </label>
+            </div>
+          ))}
         </div>
         <hr />
-        <button className="button">
-          Save Order
+        <div className="button-checkout">
+    
+        < button
+        className="button"
+        >Pay order {getCartSubTotal()}
         </button>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Checkout
+export default Checkout;
