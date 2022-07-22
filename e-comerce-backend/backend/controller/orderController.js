@@ -47,6 +47,7 @@ const getOrdersByStoreAndUser = async (req, res) => {
 const createOrderByUser = async (req, res) => {
    
     try{
+        console.log("order", req.body);
         const order = await order.create(req.body, {new: true});
         console.log("order create");
         return res.json(order);

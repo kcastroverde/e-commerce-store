@@ -40,7 +40,7 @@ const orderSchema = mongoose.Schema(
     },
     wallet:{
         type: String,
-        required: true
+
     },
     finalStatus:{
         type: String,

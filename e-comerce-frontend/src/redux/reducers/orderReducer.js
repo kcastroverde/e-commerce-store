@@ -59,7 +59,7 @@ const orderReducer = (state = ORDER_INITIAL_STATE, actions) => {
                 savingOrder: false,
                 orderSaved: actions.payload,
             }
-
+o
         default:
             return state
     }

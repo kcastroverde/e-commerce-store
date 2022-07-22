@@ -24,6 +24,15 @@ const deleteOrder = payload => ({
     payload: payload,
 });
 
+const savingOrder = () => ({
+    type: "SAVING_ORDER",
+});
+
+const orderSaved = payload => ({
+    type: "ORDER_SAVED",
+    payload: payload,
+});
+
 export const fetchOrder = () => async dispatch => {
     dispatch(requestOrder());
     try {
@@ -38,11 +47,13 @@ export const fetchOrder = () => async dispatch => {
 
 export const createOrder = (order) => async dispatch => {
     dispatch(requestOrder());
+    dispatch(savingOrder());
     try {
         const data = await Api.createOrder(order);
         dispatch(receiveOrder(data));
     }
     catch (error) {
         dispatch(errorOrder(error));
+        dispatch(orderSaved(false));
     }
 }

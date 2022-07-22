@@ -179,11 +179,24 @@ const getOrders = async () => {
 
 const createOrder = async (order) => {
   const token = getToken()
+  const body = {
+    fullName: order.Address.fullName,
+    address: order.Address.address,
+    zipCode: order.Address.zipCode,
+    city: order.Address.city,
+    country: order.Address.country,
+    products : order.cartItems.map(item => {
+      return {
+        productId: item.product.product,
+        count: item.qty
+      }})
+    
+  }
   const headers = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`
   }
-  const {data} = await axios.post(`${API}/orders/`, order, {headers})
+  const {data} = await axios.post(`${API}/orders/`, body, {headers})
   return data
 }
 

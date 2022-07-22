@@ -27,11 +27,15 @@ const Checkout = () => {
   const cart = useSelector((state) => state.cart);
   const cartItems = useMemo(() => cart.products, [cart]);
   const [checkoutFull, setCheckoutFull] = useState(false);
+
+
   const handleOrden = () => {
     if(checkoutFull){
       const Order ={Address,cartItems};
       dispatch(createOrder(Order));
   }}
+
+
 
   useEffect(() => {
     if (fullName) {
@@ -93,8 +97,7 @@ const Checkout = () => {
       .toFixed(2);
   };
 
-  console.log("Address", Address);
-  console.log("fullCheckout", checkoutFull);
+  console.log("cartItems", cartItems);
   return (
     <div className="Checkout">
       <div className="container">
@@ -238,6 +241,7 @@ const Checkout = () => {
         <div className="button-checkout">
     
         < button
+        onClick={handleOrden}
         className="button"
         >Pay order {getCartSubTotal()}
         </button>
