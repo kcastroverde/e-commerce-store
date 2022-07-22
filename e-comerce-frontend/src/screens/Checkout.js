@@ -31,9 +31,12 @@ const Checkout = () => {
 
   const handleOrden = () => {
     if(checkoutFull){
-      const Order ={Address,cartItems};
+      const Order ={Address,cartItems, total: getCartSubTotal()}
       dispatch(createOrder(Order));
-  }}
+  }else{
+    alert("Please complete your Checkout");
+  }
+}
 
 
 

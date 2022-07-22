@@ -185,9 +185,10 @@ const createOrder = async (order) => {
     zipCode: order.Address.zipCode,
     city: order.Address.city,
     country: order.Address.country,
+    total: order.total,
     products : order.cartItems.map(item => {
       return {
-        productId: item.product.product,
+        productId: item.product,
         count: item.qty
       }})
     

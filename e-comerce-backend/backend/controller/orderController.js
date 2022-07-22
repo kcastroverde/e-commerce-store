@@ -1,4 +1,5 @@
-const order = require("../models/Order");
+const Order = require("../models/Order");
+const User = require("../models/User");
 
 const getOrders = async (req, res) => {
     try{
@@ -47,10 +48,49 @@ const getOrdersByStoreAndUser = async (req, res) => {
 const createOrderByUser = async (req, res) => {
    
     try{
-        console.log("order", req.body);
-        const order = await order.create(req.body, {new: true});
-        console.log("order create");
-        return res.json(order);
+        console.log("order-Body", req.body);
+        const  {fullName, address, zipCode, city, country}= req.body
+        const user = await User.findById(req.user)
+        console.log("user", user);
+        if(user.fullName === fullName||
+            user.address === address||
+            user.zipCode === zipCode||
+            user.city === city||
+            user.country === country)
+            {
+                const order = await Order.create({
+                    userId: user._id,
+                    storeId: user.storeId,
+                    products: req.body.products,
+                    total: req.body.total,
+                });
+                console.log("order create");
+                return res.json({
+                    orderSaved: true,
+                    order
+                });
+            }else{
+                // update user 
+                user.fullName = fullName;
+                user.address = address;
+                user.zipCode = zipCode;
+                user.city = city;
+                user.country = country;
+                await user.save();
+                console.log("user update");
+                const order = await Order.create({
+                    userId: user._id,
+                    storeId: user.storeId,
+                    products: req.body.products,
+                    total: req.body.total
+            })
+            console.log("order create");
+            return res.json({
+                orderSaved: true,
+                order
+            });
+        }
+
     }catch(error){
         console.error(error);
         return res.status(500).json({message: "Server Error"});
