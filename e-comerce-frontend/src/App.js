@@ -41,13 +41,13 @@ function App() {
 
       <main className="app">
         <Routes>
-          <Route exact path="/" component={HomeScreen} />
-          <Route exact path="/product/:id" component={ProductScreen} />
-          <Route exact path="/cart" component={CartScreen} />
-          <Route exact path="/signup" component={SignUp} />
-          <Route exact path="/signin" component={SignIn} />
-          <Route exact path="/checkout" component={Checkout}/>
-          <Route exact path="/admin" component={AdminSite} />
+          <Route  path="/" element={<HomeScreen/>} />
+          <Route  path="/product/:id" element={<ProductScreen/>} />
+          <Route  path="/cart" element={<CartScreen/>} />
+          <Route  path="/signup" element={<SignUp/>} />
+          <Route  path="/signin" element={<SignIn/>} />
+          <Route  path="/checkout" element={<Checkout/>}/>
+          <Route  path="/admin" element={<AdminSite/>} />
         </Routes>
       </main>
     </Router>

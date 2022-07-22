@@ -1,5 +1,5 @@
 import './SideDrawer.css'
-import {Link, useHistory} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 
 import { logOut } from '../redux/actions/userAction'
@@ -7,7 +7,7 @@ import { logOut } from '../redux/actions/userAction'
 const SideDrawer = ({show, click}) => {
   const sideDrawerClass = ['sidedrawer']
   const user = useSelector(state => state.user)
-  const history = useHistory()
+  const history = useNavigate()
 
   const dispatch = useDispatch()
 
@@ -25,7 +25,7 @@ const SideDrawer = ({show, click}) => {
     // console.log('click')
 
     logOut()
-    history.push('/')
+    history('/')
   }
 
   return (

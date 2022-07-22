@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { clearCart } from "../redux/actions/cartActions";
 import { addOrder, createOrder } from "../redux/actions/orderActions";
 
@@ -21,7 +21,7 @@ const Checkout = () => {
   });
 
   const [token, setToken] = useState(1);
-  const history = useHistory();
+  const history = useNavigate();
   const dispatch = useDispatch();
 
   const cart = useSelector((State) => State.cart);

@@ -33,8 +33,8 @@ const sigIn = async ({email, password}) => {
   return data
 }
 
-const sigUp = async (name, email, password, storeId) => {
-  const {data} = await axios.post(`${API}/user/signup`, {name, email, password, storeId})
+const sigUp = async (name, email, password) => {
+  const {data} = await axios.post(`${API}/user/signup`, {name, email, password, STORE_ID})
   //save token to localstorage
   setToken(data.token)
   return data

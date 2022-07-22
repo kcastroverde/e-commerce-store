@@ -1,12 +1,12 @@
 import React, {useCallback, useState, useEffect} from 'react';
-import {Link, useHistory} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import './signIn.css';
 import { fetchSignIn } from '../../redux/actions/userAction';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 function Index() {
-  const {replace, push} = useHistory()
+  const navigate = useNavigate()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
 
@@ -23,9 +23,9 @@ function Index() {
 
   useEffect(() => {
     if (loginSuccess) {
-      replace('/')
+      navigate('/')
     }
-  }, [loginSuccess, replace])
+  }, [loginSuccess, navigate])
 
   useEffect(() => {
     if (error) {
@@ -50,7 +50,7 @@ function Index() {
               // backgroundColor: 'red',
             }}
           >
-            <div style={{cursor: 'pointer'}} onClick={() => push('/')}>
+            <div style={{cursor: 'pointer'}} onClick={() => navigate('/')}>
               <i className="fas fa-arrow-circle-left fa-5x"></i>
             </div>
             <p>Sign In</p>

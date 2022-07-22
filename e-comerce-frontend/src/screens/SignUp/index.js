@@ -1,10 +1,10 @@
 import React, {useCallback, useState} from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {Api} from '../../utils/Api'
 import './signup.css'
 
 function Index() {
-  const {replace, push} = useHistory()
+  const navigate = useNavigate();
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -24,9 +24,9 @@ function Index() {
         return
       }
       alert(data)
-      replace('/signin')
+      navigate('/signin')
     }
-  }, [email, fullName, password, replace])
+  }, [email, fullName, password, navigate])
   if (loading) return <h1>Loading...</h1>
   return (
     <div className="signupscreen">
@@ -41,7 +41,7 @@ function Index() {
               // backgroundColor: 'red',
             }}
           >
-            <div style={{cursor: 'pointer'}} onClick={() => push('/')}>
+            <div style={{cursor: 'pointer'}} onClick={() => navigate('/')}>
               <i className="fas fa-arrow-circle-left fa-5x"></i>
             </div>
             <p>Signup</p>

@@ -1,5 +1,5 @@
 import './Navbar.css'
-import {Link, useHistory} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import {useEffect, useState} from 'react'
 import { getUserDetails, logOut } from '../redux/actions/userAction'
@@ -10,7 +10,7 @@ import { fetchStore } from '../redux/actions/storeActions'
 
 const Navbar = ({click}) => {
   const cart = useSelector(state => state.cart)
-  const history = useHistory()
+  const history = useNavigate()
   const user = useSelector(state => state.user)
   const store = useSelector(state => state.store)
   const dispatch = useDispatch()
@@ -30,7 +30,7 @@ const Navbar = ({click}) => {
     // console.log('click')
     dispatch(logoutCart())
     dispatch(logOut())
-    history.push('/')
+    history('/')
   }
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import './CartScreen.css'
 import {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {Link, useHistory} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 // Components
 import CartItem from '../components/CartItem'
@@ -12,7 +12,7 @@ import { modifyCart, removeFromCart} from '../redux/actions/cartActions'
 
 const CartScreen = () => {
   const dispatch = useDispatch()
-  const {replace, push } = useHistory()
+  const history = useNavigate()
   const cart = useSelector(state => state.cart)
   const user = useSelector(state => state.user)
   const {loginSuccess} = user
@@ -38,7 +38,7 @@ const CartScreen = () => {
       .toFixed(2)
   }
   const navigateToCheckout = () => {
-    products.length > 0 ? replace('/checkout') : alert('Cart is empty')
+    products.length > 0 ? history('/checkout') : alert('Cart is empty')
   }
 
   console.log("cart", cart)

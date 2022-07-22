@@ -40,7 +40,7 @@ export const fetchSignIn = ({email, password}) => async dispatch => {
     const  data  = await Api.sigIn({email, password});
     console.log("data", data);
     dispatch(receiveUser({
-      userDetails: data,
+      userDetails: data.user,
     }));
   }
   catch (error) {
