@@ -114,7 +114,7 @@ const updateOrder = async (req, res) => {
         if(userId === Order.userId||userRole === "admin"|| userRole === "superAdmin"){
             const order = await Order.updateOne({_id: orderId}, req.body);
             console.log("order update");
-            const orders = await Order.find({userId: req.user._id}).populate('products.productId');
+            const orders = await Order.find({userId: req.user._id})
             return res.json({
                 orderSaved: true,
                 orders

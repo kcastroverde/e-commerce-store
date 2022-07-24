@@ -81,9 +81,9 @@ const AdminOrdersDetail = () => {
                 <h2>Productos:</h2>
                 {selectedorder.products.map((item, index) => (
                   <div className="orders-detail-footer" key={index}>
-                    <h3>{item.productId.name}</h3>
+                    <h3>{item.name}</h3>
                     <h3>Qty:{item.count}</h3>
-                    <h3>Price:{item.productId.price.toFixed(2)}</h3>
+                    <h3>Price:{item.price.toFixed(2)}</h3>
                   </div>
                 ))}
               </div>

@@ -16,6 +16,11 @@
 .admin-products-exist{
     border: 1px solid black;
     padding: 10px;
+    margin-bottom: 100px;
+}
+
+.admin-products-exist h3{
+    margin-bottom: 20px;
 }
 
 .admin-products-new div{
@@ -33,6 +38,8 @@
     min-width: 100px;
     height: 25px;
     border-radius: 5px;
+
+    font-weight: 600;
 }
 
 .admin-products-detail{
@@ -43,6 +50,10 @@
     
 }
 
+.admin-products-detail form{
+    width: 100%;
+
+}
 .admin-products-detail-old{
     display: flex;
     justify-content: flex-start;
@@ -133,6 +144,10 @@
 .button-admin-product-save{
     background-color: rgb(2, 81, 24)!important;
     border-radius: 20px;
+    color: #fff;
+    margin: 0 auto;
+    max-width: 400px;
+    cursor: pointer;
 }
 
 .products-detail-image{
@@ -151,4 +166,10 @@
 .inputs-flex-colum{
     display: flex;
     flex-direction: column;
+}
+
+.image-admin-products img{
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
 }

@@ -3,8 +3,10 @@ import { MdDeleteForever } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchNewProduct } from "../../redux/actions/productActions";
+import { useNavigate } from "react-router-dom";
 
 const Adminproducts = () => {
+  const navigate = useNavigate();
   const product = useSelector((state) => state.product);
   const category = useSelector((state) => state.category);
   const { products, initialLoad } = product;
@@ -39,7 +41,7 @@ const Adminproducts = () => {
     formData.append("price", newProduct.price);
     formData.append("description", newProduct.description);
     formData.append("countInStock", newProduct.countInStock);
-    formData.append("imageToCharge", newProduct.imageToCharge);
+    formData.append("imageUrl", newProduct.imageToCharge);
     formData.append("category", newProduct.category);
     //if value "" alert 
     if(newProduct.name === "" || newProduct.price === "" || newProduct.description === "" || newProduct.countInStock === "" || newProduct.imageToCharge === "" || newProduct.category === ""){
@@ -47,8 +49,21 @@ const Adminproducts = () => {
       return;
     }
 
-    dispatch(fetchNewProduct(formData));
+    dispatch(fetchNewProduct(newProduct));
+    setNewProduct({
+      name: "",
+      price: "",
+      description: "",
+      countInStock: "",
+      imageToCharge: "",
+      category: "",
+    });
   }
+
+  const navigateToDetails = (id) => {
+    navigate(`/admin/products/${id}`);
+  }
+
 
   return (
     <div className="admin-product-container">
@@ -96,7 +111,7 @@ const Adminproducts = () => {
                   <option value="">seleccione...</option>
                   {categoriesLoaded &&
                     categories.map((category, index) => (
-                      <option key={index} value={category.id}>
+                      <option key={index} value={category._id}>
                         {category.name}
                       </option>
                   ))}
@@ -151,8 +166,14 @@ const Adminproducts = () => {
                       <p>Categoria: </p>
                       {item.categorieId.name}
                     </div>
+                    <div className="image-admin-products">
+                  
+                     <img src={item.imageUrl.url} alt=""/>
+                    </div>
                     <div>
-                    <button>editar</button>
+                    <button
+                    onClick={() => navigateToDetails(item._id)}
+                    >editar</button>
                   </div>
                   </div>
                   {/* <div className="body-products-detail">

@@ -1,4 +1,5 @@
 export const convertToCartData = (carts)=> {
+  const cartData = carts.filter(cart => cart.productId !== null|| cart.productId !== undefined);
   return carts.map(c => {
     return {
       product: c.productId._id,

@@ -11,7 +11,6 @@ const AdminOrders = () => {
     navigate(`/admin/oders/${id}`);
   }
 
-  console.log("orders", Orders);
 
   const fiveDigit = (num) => {
     return num.toString().padStart(5, "0");

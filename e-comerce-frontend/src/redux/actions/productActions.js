@@ -41,4 +41,16 @@ export const fetchNewProduct = (formData) => async dispatch => {
   }
 }
 
+export const editProducts = (formData, id) => async dispatch => {
+  try {
+    const data = await Api.updateProduct(formData, id);
+    dispatch(receiveProducts({
+      products: data,
+    }));
+  }
+  catch (error) {
+    dispatch(errorProducts(error));
+  }
+}
+
 

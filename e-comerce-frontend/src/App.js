@@ -25,6 +25,7 @@ import AdminCategories from './components/adminSite/AdminCategories'
 import OrderScreen from './screens/OrderScreen'
 import OrderDetails from './components/Orders/OrdersDetail'
 import AdminOrdersDetail from './components/adminSite/AdminOrdersDetail'
+import AdminEdithProducts from './components/adminSite/AdminEdithProducts'
 
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
           <Route path="/admin/products" element={<Adminproducts/>}/>
           <Route path="/admin/category" element={<AdminCategories/>}/>
           <Route path="/admin/oders/:id" element={<AdminOrdersDetail/>}/>
+          <Route path="/admin/products/:id" element={<AdminEdithProducts/>}/>
           </Route>
         </Routes>
       </main>

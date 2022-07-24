@@ -14,12 +14,19 @@ const orderSchema = mongoose.Schema(
     },
     products:[
         {
-            productId:{
-                type: mongoose.Types.ObjectId,
-                ref: 'product',
+            name:{
+                type: String,
                 required: true,
             },
             count:{
+                type: String,
+                required: true,
+            },
+            price:{
+                type: Number,
+                required: true,
+            },
+            productId:{
                 type: String,
                 required: true,
             }

@@ -24,3 +24,13 @@ export const fetchCategory = () => async dispatch => {
         dispatch(errorCategory(error));
     }
 }
+
+export const newCategory = (name) => async dispatch => {
+    try {
+        const data = await Api.createCategory(name);
+        dispatch(receiveCategory(data));
+    }
+    catch (error) {
+        dispatch(errorCategory(error));
+    }
+}

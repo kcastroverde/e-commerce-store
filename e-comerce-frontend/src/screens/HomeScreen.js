@@ -39,7 +39,7 @@ const HomeScreen = () => {
               name={product.name}
               description={product.description}
               price={product.price}
-              imageUrl={product.imageUrl}
+              imageUrl={product.imageUrl.url}
               productId={product._id}
             />
           ))

@@ -73,14 +73,7 @@ const deleteCategorie = async (req, res) => {
 
 const createCategorie = async (req, res) => {
   try {
-    //check if category already exists
-    const category = await Categorie.findOne({
-      name: req.body.name,
-      storeId: req.user.storeId
-    });
-    if (category) {
-      return res.status(400).json({ message: "Category already exists" });
-    }
+
     //create new category
     storeId = req.user.storeId;
     const categorie = await Categorie.create({
@@ -88,7 +81,8 @@ const createCategorie = async (req, res) => {
         storeId: storeId
     });
     console.log("categorie create");
-    return res.status(201).json(categorie);
+    const categories = await Categorie.find({ storeId: storeId });
+    return res.status(201).json(categories);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server Error" });

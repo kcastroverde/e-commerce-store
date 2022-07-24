@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+const cloudinary = require("../config/cloudinary");
 
 const getProducts = async (req, res) => {
   try {
@@ -49,38 +50,65 @@ const getProductsByCategory = async (req, res) => {
 }
 
 const createProduct = async (req, res) => {
-  //try {
-    //console.log formData
-    console.log("formData", req.body);
-
-  //   const storeId = req.user.storeId;
-  //   console.log(req.body.categorieId);
-  //   const product = await Product.create({
-  //     storeId: storeId,
-  //     name: req.body.name,
-  //     description: req.body.description,
-  //     price: req.body.price,
-  //     countInStock: req.body.countInStock,
-  //     imageUrl: req.body.imageUrl,
-  //     categorieId: req.body.categorieId,
-  //   });
-  //   console.log("product create");
-  //   return res.status(201).json(product);
-  // } catch (error) {
-  //   console.error(error);
-  //   return res.status(500).json({ message: "Server Error" });
-  // }
+  try{
+    const {name, price, description,countInStock,category, imageToCharge} = req.body.formData;
+    const storeId = req.user.storeId;
+    const cloudinaryUpload = await cloudinary.uploader.upload(imageToCharge, {
+      folder: storeId,
+      width: 500,
+      crop: "scale"
+    });
+    const product = new Product({
+      name,
+      price,
+      description,
+      categorieId:category,
+      imageUrl: {
+        url: cloudinaryUpload.url,
+        public_id: cloudinaryUpload.public_id
+      },
+      storeId,
+      countInStock
+    });
+    await product.save();
+    console.log("product create");
+    const products = await Product.find({storeId: req.user.storeId}).populate("categorieId");
+    return res.status(200).json(products);
+  }catch(error){
+    console.error(error);
+    return res.status(500).json({ message: "Server Error" });
+  }
 }
 
 const updateProduct = async (req, res) => {
   try{
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    const {name, price, description,countInStock,category, imageUrl} = req.body.formData;
+    const product = await Product.find({_id: req.params.id});
+    if(imageUrl !== product.imageUrl.url){
+      const cloudinaryUpload = await cloudinary.uploader.upload(imageUrl, {
+        folder: product.storeId,
+        width: 500,
+        crop: "scale"
+      });
+      product.imageUrl.url = cloudinaryUpload.url;
+      product.imageUrl.public_id = cloudinaryUpload.public_id;
+    }
+    const updatedProduct = await Product.updateOne({_id: req.params.id}, {
+      name,
+      price,
+      description,
+      categorieId:category,
+      countInStock
+    });
+
     console.log("product update");
-    return res.status(200).json(product);
+    const products = await Product.find({storeId: req.user.storeId}).populate("categorieId");
+    return res.status(200).json(products);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server Error" });
   }
+
 }
 
 const deleteProduct = async (req, res) => {
