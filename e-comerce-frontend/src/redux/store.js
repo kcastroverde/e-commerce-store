@@ -7,12 +7,16 @@ import productReducer from './reducers/productReducers'
 import cartReducer from './reducers/cartReducers'
 import userReducer from './reducers/userReducer'
 import storeReducer from './reducers/storeReducer'
+import orderReducer from './reducers/orderReducer'
+import categoryReducer from './reducers/categoryReducer'
 
 const reducer = combineReducers({
   product: productReducer,
   cart: cartReducer,
   user: userReducer,
-  store: storeReducer
+  store: storeReducer,
+  orders: orderReducer,
+  category: categoryReducer
 })
 
 const middleware = [thunk]

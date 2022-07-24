@@ -36,7 +36,7 @@ const orderSaved = payload => ({
 export const fetchOrder = () => async dispatch => {
     dispatch(requestOrder());
     try {
-        const data = await Api.getOrder();
+        const data = await Api.getOrders();
         console.log("data", data);
         dispatch(receiveOrder(data));
     }
@@ -51,6 +51,19 @@ export const createOrder = (order) => async dispatch => {
     try {
         const data = await Api.createOrder(order);
         dispatch(receiveOrder(data));
+    }
+    catch (error) {
+        dispatch(errorOrder(error));
+        dispatch(orderSaved(false));
+    }
+}
+
+export const confirmOrCancelOrder = (orderId, finalStatus) => async dispatch => {
+    dispatch(requestOrder());
+    dispatch(savingOrder());
+    try {
+        const data = await Api.confirmOrCancel(orderId, finalStatus);
+        dispatch(receiveOrder(data.orders));
     }
     catch (error) {
         dispatch(errorOrder(error));

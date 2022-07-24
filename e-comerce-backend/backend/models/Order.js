@@ -44,9 +44,20 @@ const orderSchema = mongoose.Schema(
     },
     finalStatus:{
         type: String,
-        value: ['pending', 'delivered', 'custodie'],
+        value: ['pending', 'confirmed', 'cancelled'],
         required: true,
         default: 'pending',
+    },
+    orderNumber:{
+        type: Number,
+        required: true,
+    },
+    txHash:{
+        type: String,
+    },
+    orderType:{
+        type: String,
+        value: ['entrega', 'custodia'],
     }
 },
 {

@@ -15,6 +15,11 @@ const errorStore = payload => ({
     payload: payload,
 });
 
+const updateStore =(payload) => ({
+    type: "UPDATE_STORE",
+    payload: payload,
+});
+
 export const fetchStore = () => async dispatch => {
     dispatch(requestStore());
     try {
@@ -31,3 +36,19 @@ export const fetchStore = () => async dispatch => {
     }
 }
 
+export const updateStores = (store) => async dispatch => {
+    dispatch(requestStore());
+    try {
+        console.log("store", store)
+        const data = await Api.updateStore(store);
+        const storeName = data.name;
+        const discount = data.discount;
+        dispatch(updateStore({
+            storeName,
+            discount,
+        }));
+    }
+    catch (error) {
+        dispatch(errorStore(error));
+    }
+}

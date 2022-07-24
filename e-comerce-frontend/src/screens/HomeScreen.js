@@ -19,9 +19,6 @@ const HomeScreen = () => {
   const {products, loading, error} = getProducts
   
 
-  useEffect(() => {
-    dispatch(fetchProducts())
-  }, [dispatch])
 
 
 

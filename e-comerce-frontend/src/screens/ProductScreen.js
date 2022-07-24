@@ -1,13 +1,16 @@
 import './ProductScreen.css';
 import {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
 
 // Actions
 import {addToCart, removeFromCart} from '../redux/actions/cartActions';
 import {fetchProducts} from '../redux/actions/productActions';
 
 
-const ProductScreen = ({match, history}) => {
+const ProductScreen = () => {
+  const navigate = useNavigate(); 
+  const {id} = useParams();
   const [qty, setQty] = useState(1);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -24,12 +27,12 @@ const ProductScreen = ({match, history}) => {
   }, [dispatch], [initialLoad]);
 
   useEffect(() => {
-    if (!initialLoad && match.params.id !== products._id) {
-      const product = products.find(p => p._id === match.params.id)
+    if (!initialLoad && id !== products._id) {
+      const product = products.find(p => p._id === id)
       setProduct(product);
       setLoading(false);
     }
-  }, [match, products, initialLoad, dispatch]);
+  }, [id, products, initialLoad, dispatch]);
 
   const addToCartHandler = () => {
     if (user.loginSuccess) {
@@ -39,7 +42,7 @@ const ProductScreen = ({match, history}) => {
         alert(errorMsg);
         return;
       }
-      history.push(`/cart`)
+      navigate(`/cart`)
       return
     } else {
       alert('You need to first login.')

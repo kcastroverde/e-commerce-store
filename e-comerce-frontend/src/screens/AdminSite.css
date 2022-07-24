@@ -1,13 +1,56 @@
 .adminsite{
-    max-width: 1300px;
+    max-width: 100%;
     margin: 1rem auto;
     display: flex;
-    height: 100vh;
+
     margin-top: 0px;
 }
 
-.sideBar{
-    border: 1px solid #000;
-    width: 20%;
-
+.admin-screen{
+    width: 100%;
+    height: calc(100vh - 98px);
+    overflow-y: hidden;
 }
+
+.sideBar{
+    max-width: 240px;
+    width: 20%;
+    background-color: #171717;;
+}
+
+.not-display{
+    display: none;
+}
+
+.sideBar li{
+    list-style: none;
+    padding: 1rem;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.sideBar a{
+    text-decoration: none;
+    color: rgb(172, 172, 172);
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.active{
+    color: rgb(255, 255, 255)!important;
+}
+
+.admin-icon{
+    font-size: 1.5em;
+    margin-right: 1rem;
+}
+
+.title-adminsite{
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+}
+

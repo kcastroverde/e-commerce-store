@@ -18,6 +18,13 @@ import {fetchCart} from './redux/actions/cartActions';
 import { getUserDetails } from './redux/actions/userAction';
 import Checkout from './screens/Checkout';
 import AdminSite from './screens/AdminSite';
+import Dashboard from './components/adminSite/Dasboard'
+import AdminOrders from './components/adminSite/AdminOrders'
+import Adminproducts from './components/adminSite/Adminproducts'
+import AdminCategories from './components/adminSite/AdminCategories'
+import OrderScreen from './screens/OrderScreen'
+import OrderDetails from './components/Orders/OrdersDetail'
+import AdminOrdersDetail from './components/adminSite/AdminOrdersDetail'
 
 
 function App() {
@@ -47,7 +54,16 @@ function App() {
           <Route  path="/signup" element={<SignUp/>} />
           <Route  path="/signin" element={<SignIn/>} />
           <Route  path="/checkout" element={<Checkout/>}/>
-          <Route  path="/admin" element={<AdminSite/>} />
+          <Route  path="/orders" element={<OrderScreen/>}/>
+          <Route  path="/order/:id" element={<OrderDetails/>}/> 
+          <Route  path="/admin" element={<AdminSite/>}>
+          <Route index element={<Dashboard/>}/>
+          <Route path="/admin/dashboard" element={<Dashboard/>}/>
+          <Route path="/admin/orders" element={<AdminOrders/>}/>
+          <Route path="/admin/products" element={<Adminproducts/>}/>
+          <Route path="/admin/category" element={<AdminCategories/>}/>
+          <Route path="/admin/oders/:id" element={<AdminOrdersDetail/>}/>
+          </Route>
         </Routes>
       </main>
     </Router>

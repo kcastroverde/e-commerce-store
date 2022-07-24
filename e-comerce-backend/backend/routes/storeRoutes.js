@@ -7,12 +7,12 @@ const {
     updateStore,
     deleteStore
 } = require('../controller/storeController')
-const {verifySuperAdmin} = require('../middleware/middleware')
+const {verifySuperAdmin,verifyAdmin } = require('../middleware/middleware')
 
 router.get('/',verifySuperAdmin, getStores)
 router.get('/:id', getStoreById)
 router.post('/',verifySuperAdmin, createStore)
-router.put('/:id',verifySuperAdmin, updateStore)
+router.put('/update',verifyAdmin, updateStore)
 router.delete('/:id',verifySuperAdmin, deleteStore)
 
 module.exports = router

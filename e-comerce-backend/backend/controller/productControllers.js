@@ -2,7 +2,7 @@ const Product = require("../models/Product");
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({storeId: req.params.storeId,});
+    const products = await Product.find({storeId: req.params.storeId,}).populate("categorieId");
     if(products.length === 0){
      return res.status(404).json({message: "No products loaded"});
     }
@@ -49,24 +49,27 @@ const getProductsByCategory = async (req, res) => {
 }
 
 const createProduct = async (req, res) => {
-  try {
-    const storeId = req.user.storeId;
-    console.log(req.body.categorieId);
-    const product = await Product.create({
-      storeId: storeId,
-      name: req.body.name,
-      description: req.body.description,
-      price: req.body.price,
-      countInStock: req.body.countInStock,
-      imageUrl: req.body.imageUrl,
-      categorieId: req.body.categorieId,
-    });
-    console.log("product create");
-    return res.status(201).json(product);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server Error" });
-  }
+  //try {
+    //console.log formData
+    console.log("formData", req.body);
+
+  //   const storeId = req.user.storeId;
+  //   console.log(req.body.categorieId);
+  //   const product = await Product.create({
+  //     storeId: storeId,
+  //     name: req.body.name,
+  //     description: req.body.description,
+  //     price: req.body.price,
+  //     countInStock: req.body.countInStock,
+  //     imageUrl: req.body.imageUrl,
+  //     categorieId: req.body.categorieId,
+  //   });
+  //   console.log("product create");
+  //   return res.status(201).json(product);
+  // } catch (error) {
+  //   console.error(error);
+  //   return res.status(500).json({ message: "Server Error" });
+  // }
 }
 
 const updateProduct = async (req, res) => {

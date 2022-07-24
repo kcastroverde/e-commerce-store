@@ -3,7 +3,8 @@ const User = require("../models/User");
 
 const getOrders = async (req, res) => {
     try{
-        const orders = await order.find({userId: req.params.userId});
+
+        const orders = await Order.find({userId: req.user._id}).populate('products.productId');
         console.log("order get")
         return res.json(orders);
     }catch(error){
@@ -48,9 +49,11 @@ const getOrdersByStoreAndUser = async (req, res) => {
 const createOrderByUser = async (req, res) => {
    
     try{
-    
         const  {fullName, address, zipCode, city, country, state}= req.body
         const user = await User.findById(req.user)
+        //orderLength by store
+        const orders = await Order.find({storeId: req.user.storeId});
+        const orderLength = orders.length;
      
         if(user.fullName === fullName&&
             user.address === address&&
@@ -65,6 +68,7 @@ const createOrderByUser = async (req, res) => {
                     storeId: user.storeId,
                     products: req.body.products,
                     total: req.body.total,
+                    orderNumber: orderLength+1,
                 });
                 console.log("order create");
                 return res.json({
@@ -85,7 +89,8 @@ const createOrderByUser = async (req, res) => {
                     userId: user._id,
                     storeId: user.storeId,
                     products: req.body.products,
-                    total: req.body.total
+                    total: req.body.total,
+                    orderNumber: orderLength+1,
             })
             console.log("order create");
             return res.json({
@@ -101,13 +106,19 @@ const createOrderByUser = async (req, res) => {
 }
 
 const updateOrder = async (req, res) => {
-    const userId = req.params.userId;
+    const orderId = req.params.id;
+    const userId = req.user._id
+    const userRole = req.user.role
+    console.log("body", req.body)
     try{
-
-        if(userId === order.userId){
-            const order = await order.findByIdAndUpdate(req.params.id, req.body, {new: true});
+        if(userId === Order.userId||userRole === "admin"|| userRole === "superAdmin"){
+            const order = await Order.updateOne({_id: orderId}, req.body);
             console.log("order update");
-            return res.json(order);
+            const orders = await Order.find({userId: req.user._id}).populate('products.productId');
+            return res.json({
+                orderSaved: true,
+                orders
+            });
         }
         else{
             return res.status(401).json({message: "Unauthorized"});

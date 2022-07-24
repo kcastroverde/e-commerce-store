@@ -8,7 +8,7 @@ const {
 } = require("../controller/categoriesController");
 const {verifyAdmin} = require("../middleware/middleware");
 
-    router.get("/store/:store", getCategoriesByStore);
+    router.get("/:store", getCategoriesByStore);
     router.get("/:id", getCategorieById);
     router.post("/",verifyAdmin, createCategorie);
     router.delete("/:id",verifyAdmin, deleteCategorie);

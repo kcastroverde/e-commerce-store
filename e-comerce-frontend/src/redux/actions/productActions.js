@@ -29,4 +29,16 @@ export const fetchProducts = () => async dispatch => {
   }
 }
 
+export const fetchNewProduct = (formData) => async dispatch => {
+  try {
+    const data = await Api.createProduct(formData);
+    dispatch(receiveProducts({
+      products: data,
+    }));
+  }
+  catch (error) {
+    dispatch(errorProducts(error));
+  }
+}
+
 

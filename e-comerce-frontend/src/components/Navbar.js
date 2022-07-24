@@ -6,6 +6,10 @@ import { getUserDetails, logOut } from '../redux/actions/userAction'
 import { getToken } from '../utils/localstorage'
 import { fetchCart, logoutCart } from '../redux/actions/cartActions'
 import { fetchStore } from '../redux/actions/storeActions'
+import { fetchOrder } from '../redux/actions/orderActions'
+import { fetchProducts } from '../redux/actions/productActions'
+import { fetchCategory } from '../redux/actions/categoryAction'
+
 
 
 const Navbar = ({click}) => {
@@ -36,6 +40,8 @@ const Navbar = ({click}) => {
   useEffect(() => {
     if(!StoreLoaded){
     dispatch(fetchStore());
+    dispatch(fetchCategory());
+    dispatch(fetchProducts());
     }
   }, [dispatch, StoreLoaded])
 
@@ -47,7 +53,8 @@ const Navbar = ({click}) => {
 
   useEffect(() => {
     if(loginSuccess){
-      dispatch(fetchCart())
+      dispatch(fetchCart());
+      dispatch(fetchOrder());
     }
   }, [dispatch, loginSuccess])
 
@@ -58,7 +65,7 @@ const Navbar = ({click}) => {
   }, [cartLoaded])
 
 
-
+  
   return (
     <nav className="navbar">
       <div className="navbar__logo">
@@ -70,11 +77,13 @@ const Navbar = ({click}) => {
       </div>
 
       <ul className="navbar__links">
+      {loginSuccess? userDetails.role === "admin" ?
       <li>
           <Link to="/admin" className='admin__link'>
-            {loginSuccess? userDetails.role === "admin" ? 'Admin' : null : null}
+          Admin 
           </Link>
-        </li>
+      </li>
+      : null : null}
         <li>
           <Link to="/orders" className='orders__link'>
             {loginSuccess? 'Orders' : null}

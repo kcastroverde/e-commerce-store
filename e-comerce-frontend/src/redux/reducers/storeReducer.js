@@ -22,6 +22,14 @@ const storeReducer = (state = INITIAL_STATE, actions) => {
                 discount: actions.payload.discount,
                 StoreLoaded: true,
             }
+        case 'UPDATE_STORE':
+            return {
+                ...state,
+                loading: false,
+                storeName: actions.payload.storeName,
+                discount: actions.payload.discount,
+                StoreLoaded: true,
+            }
         case 'ERROR_STORE':
             return {
                 ...state,

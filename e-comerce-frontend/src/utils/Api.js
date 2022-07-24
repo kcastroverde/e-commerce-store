@@ -11,6 +11,17 @@ const getStore = async () => {
   return data;
 }
 
+const updateStore = async (store) => {
+  const token = getToken();
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.put(`${API}/stores/update`, store, {headers});
+  return data;
+}
+
+
 const getUser = async () => {
   const token = getToken();
   const headers = {
@@ -56,13 +67,13 @@ const getProductsByCategory = async (storeId, category) => {
   return data
 }
 
-const createProduct = async (storeId, name, description, price, countInStock, imageUrl, category) => {
+const createProduct = async (formData) => {
   const token = getToken()
   const headers = {
-    'Content-Type': 'application/json',
+    "Content-Type": "multipart/form-data" ,
     'Authorization': `Bearer ${token}`
   }
-  const {data} = await axios.post(`${API}/products/create`, {storeId, name, description, price, countInStock, imageUrl, category}, {headers})
+  const {data} = await axios.post(`${API}/products/`, {formData}, {headers})
   return data
 }
 
@@ -87,8 +98,8 @@ const deleteProduct = async (id) => {
 }
 
 
-const getCategories = async (storeId) => {
-  const {data} = await axios.get(`${API}/categories/${storeId}`)
+const getCategories = async () => {
+  const {data} = await axios.get(`${API}/categories/${STORE_ID}`)
   return data
 }
 
@@ -207,6 +218,17 @@ const createOrder = async (order) => {
   return data
 }
 
+const confirmOrCancel = async (orderId, finalStatus) => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.put(`${API}/orders/${orderId}`, {finalStatus: finalStatus}, {headers})
+  return data
+}
+
+
 
 
 
@@ -233,5 +255,7 @@ export const Api = {
   getOrders,
   STORE_ID,
   createOrder,
-  getStore
+  getStore, 
+  updateStore,
+  confirmOrCancel
 }

@@ -1,4 +1,4 @@
-ORDER_INITIAL_STATE = {
+const ORDER_INITIAL_STATE = {
     loading: false,
     error: false,
     errorMsg: '',
@@ -14,6 +14,7 @@ const orderReducer = (state = ORDER_INITIAL_STATE, actions) => {
             return {
                 ...state,
                 loading: true,
+                orderLoaded: false,
             }
         case 'RECEIVE_ORDER':
             return {
@@ -52,15 +53,19 @@ const orderReducer = (state = ORDER_INITIAL_STATE, actions) => {
             return {
                 ...state,
                 savingOrder: true,
+                orderLoaded: false,
             }   
         case 'ORDER_SAVED':
             return {
                 ...state,
                 savingOrder: false,
+                orderLoaded: true,
                 orderSaved: actions.payload,
             }
-o
+
         default:
             return state
     }
 }
+
+export default orderReducer;

@@ -42,8 +42,10 @@ const createStore = async (req, res) => {
 
 const updateStore = async (req, res) => {
     try{
-        const stores = await store.findByIdAndUpdate(req.params.id, req.body, {new: true});
+       
+        const Stores = await store.updateOne({_id: req.user.storeId}, req.body);
         console.log("store update");
+        const stores = await store.findById(req.user.storeId);
         return res.status(200).json(stores);
     } catch (error) {
         //if category don't exist

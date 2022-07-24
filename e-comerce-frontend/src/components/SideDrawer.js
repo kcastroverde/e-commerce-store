@@ -3,11 +3,13 @@ import {Link, useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 
 import { logOut } from '../redux/actions/userAction'
+import { logoutCart } from '../redux/actions/cartActions'
 
 const SideDrawer = ({show, click}) => {
   const sideDrawerClass = ['sidedrawer']
   const user = useSelector(state => state.user)
   const history = useNavigate()
+  const {loginSuccess, userDetails} = user
 
   const dispatch = useDispatch()
 
@@ -24,13 +26,45 @@ const SideDrawer = ({show, click}) => {
   const _handleLogout = () => {
     // console.log('click')
 
-    logOut()
+    dispatch(logoutCart());
+    dispatch(logOut())
     history('/')
   }
 
   return (
     <div className={sideDrawerClass.join(' ')}>
       <ul className="sidedrawer__links" onClick={click}>
+      {loginSuccess? userDetails.role === "admin" ?
+      <>     
+       <li>
+          <Link to="/admin/dashboard" className='admin__link'>
+          Admin Opciones 
+          </Link>
+      </li>
+      <li>
+          <Link to="/admin/orders" className='admin__link'>
+          Admin Ordenes 
+          </Link>
+      </li>
+      <li>
+          <Link to="/admin/products" className='admin__link'>
+          Admin Productos
+          </Link>
+      </li>
+      <li>
+          <Link to="/admin/category" className='admin__link'>
+          Admin Categorias
+          </Link>
+      </li>
+      </>
+      : null : null}
+      <li>
+          <Link to="/orders">
+            <span>
+              Orders
+            </span>
+          </Link>
+        </li>
         <li>
           <Link to="/cart">
             <i className="fas fa-shopping-cart"></i>
