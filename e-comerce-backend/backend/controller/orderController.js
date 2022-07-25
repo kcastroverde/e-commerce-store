@@ -15,7 +15,7 @@ const getOrders = async (req, res) => {
 
 const getOrderById = async (req, res) => {
     try{
-        const order = await order.findById(req.params.id);
+        const order = await Order.findById(req.params.id);
         console.log("order get")
         return res.json(order);
     }catch(error){
@@ -26,25 +26,18 @@ const getOrderById = async (req, res) => {
 
 const getOrdersByStore = async (req, res) => {
     try{
-        const orders = await order.find({storeId: req.params.storeId});
+        const storeId= req.user.storeId;
+        const orders = await Order.find({storeId: storeId}).populate('products.productId');
         console.log("order get")
         return res.json(orders);
-    }catch(error){
+    }
+    catch(error){
         console.error(error);
         return res.status(500).json({message: "Server Error"});
     }
 }
 
-const getOrdersByStoreAndUser = async (req, res) => {
-    try{
-        const orders = await order.find({storeId: req.params.storeId, userId: req.params.userId});
-        console.log("order get")
-        return res.json(orders);
-    }catch(error){
-        console.error(error);
-        return res.status(500).json({message: "Server Error"});
-    }
-}
+
 
 const createOrderByUser = async (req, res) => {
    
@@ -149,4 +142,4 @@ const deleteOrder = async (req, res) => {
     }
 }
 
-module.exports = {getOrders, getOrderById, getOrdersByStore, getOrdersByStoreAndUser, createOrderByUser, updateOrder, deleteOrder};
+module.exports = {getOrders, getOrderById, createOrderByUser, updateOrder, deleteOrder, getOrdersByStore};

@@ -5,10 +5,21 @@ import {IoMdOptions} from "react-icons/io";
 import {GoListUnordered} from "react-icons/go";
 import {AiOutlineShoppingCart} from "react-icons/ai";
 import {BiCategoryAlt} from "react-icons/bi";
+import {useSelector, useDispatch} from "react-redux";
+import { fetchAdminOrders } from "../redux/actions/adminOrdersAction";
 
 const AdminSite = () => {
+  const dispatch = useDispatch();
+  const adminOrders = useSelector(state => state.adminOrders);
+  const {orders, orderLoaded} = adminOrders;
   const [sideBarOpen, setSideBarOpen] = useState(true);
   const [Width, setWidth] = useState(false);
+
+  useEffect(() => {
+    if(!orderLoaded) {
+    dispatch(fetchAdminOrders());
+    }
+  }, [dispatch, orderLoaded]);
 
   useEffect(() => {
     if(Width === false) {

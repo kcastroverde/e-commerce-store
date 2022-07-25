@@ -9,6 +9,7 @@ import userReducer from './reducers/userReducer'
 import storeReducer from './reducers/storeReducer'
 import orderReducer from './reducers/orderReducer'
 import categoryReducer from './reducers/categoryReducer'
+import adminOrdersReducer from './reducers/adminOrdersReducer'
 
 const reducer = combineReducers({
   product: productReducer,
@@ -16,7 +17,8 @@ const reducer = combineReducers({
   user: userReducer,
   store: storeReducer,
   orders: orderReducer,
-  category: categoryReducer
+  category: categoryReducer,
+  adminOrders: adminOrdersReducer
 })
 
 const middleware = [thunk]

@@ -53,7 +53,7 @@ export const addToCart = (productId, quantity) => async dispatch => {
 
 export const removeFromCart = (productId) => async dispatch => {
   try {
-    console.log("productId", productId);
+  
     const data = await Api.removeFromCart(productId);
     const convertTocart = convertToCartData(data.carts);
     dispatch(updateCart(convertTocart));

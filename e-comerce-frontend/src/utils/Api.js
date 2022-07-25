@@ -236,6 +236,16 @@ const confirmOrCancel = async (orderId, finalStatus) => {
   return data
 }
 
+const getAdminOrders = async () => {
+  const token = getToken()
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  }
+  const {data} = await axios.get(`${API}/orders/admin`, {headers})
+  return data
+}
+
 
 
 
@@ -265,5 +275,6 @@ export const Api = {
   createOrder,
   getStore, 
   updateStore,
-  confirmOrCancel
+  confirmOrCancel,
+  getAdminOrders
 }

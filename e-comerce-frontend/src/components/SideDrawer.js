@@ -42,9 +42,9 @@ const SideDrawer = ({show, click}) => {
       {loginSuccess? userDetails.role === "admin" ?
       <>     
       <AcordionDrawer />
-      <AcordionDrawerCategory/>
       </>
       : null : null}
+          <AcordionDrawerCategory/>
       <li>
           <Link to="/orders">
             <span>

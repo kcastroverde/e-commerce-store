@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom";
 const AdminOrders = () => {
   const navigate = useNavigate();
-  const Orders = useSelector(state => state.orders);
-  const { orderLoaded, orders } = Orders;
-
+  const adminOrders = useSelector(state => state.adminOrders);
+  const { orderLoaded, orders } = adminOrders;
+ 
   const handleDetails = (id) => {
     navigate(`/admin/oders/${id}`);
   }

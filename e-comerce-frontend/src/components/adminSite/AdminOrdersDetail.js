@@ -7,7 +7,7 @@ import { confirmOrCancelOrder } from "../../redux/actions/orderActions";
 const AdminOrdersDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const Orders = useSelector((state) => state.orders);
+  const adminOrders = useSelector(state => state.adminOrders);
 
 
   const [selectedorder, setSelectedOrder] = useState({});
@@ -16,21 +16,21 @@ const AdminOrdersDetail = () => {
   
 
   useEffect(() => {
-    setLoadedOrders(Orders.orderLoaded);
-  }, [Orders.orderLoaded]);
+    setLoadedOrders(adminOrders.orderLoaded);
+  }, [adminOrders.orderLoaded]);
 
   useEffect(() => {
     if (loading) {
   
         if(lodedOrders){
-      const order = Orders?.orders?.find((p) => p._id === id);
+      const order = adminOrders?.orders?.find((p) => p._id === id);
       setSelectedOrder(order);
       setLoadedOrders(false);
       setLoading(false);
         }
  
     }
-  }, [lodedOrders, Orders.orders]);
+  }, [lodedOrders, adminOrders.orders]);
 
   const fiveDigit = (num) => {
     return num.toString().padStart(5, "0");
