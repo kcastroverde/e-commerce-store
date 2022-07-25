@@ -36,7 +36,7 @@ const ProductScreen = () => {
 
   const addToCartHandler = () => {
     if (user.loginSuccess) {
-      console.log("productscree", product._id)
+     
       dispatch(addToCart(product._id, qty))
       if(error){
         alert(errorMsg);

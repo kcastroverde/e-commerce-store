@@ -30,7 +30,7 @@ export const fetchCart = () => async dispatch => {
   dispatch(requestCart());
   try {
     const data = await Api.getCart();
-    console.log("data", data);
+
     const convertTocart = convertToCartData(data.carts);
     dispatch(receiveCart(convertTocart));
   }
@@ -41,7 +41,7 @@ export const fetchCart = () => async dispatch => {
 
 export const addToCart = (productId, quantity) => async dispatch => {
   try {
-    console.log("productId", productId);
+;
     const data = await Api.addToCart(productId, quantity);
     const convertTocart = convertToCartData(data.carts);
     dispatch(updateCart(convertTocart));

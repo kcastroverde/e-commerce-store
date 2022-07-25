@@ -39,7 +39,7 @@ function Index() {
   if (loading) return <h1>Loading.....</h1>
   return (
     <div className="signinscreen">
-      <div className="container">
+      <div className="container-login">
         <div className="innerContainer">
           <div
             style={{

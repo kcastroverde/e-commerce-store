@@ -15,7 +15,12 @@
 .sideBar{
     max-width: 240px;
     width: 20%;
-    background-color: #171717;;
+    background-color: #171717;
+
+}
+
+.sideBar ul{
+    padding-left: 0;
 }
 
 .not-display{
@@ -30,6 +35,10 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+}
+
+.sideBar li:hover{
+    background-color: #272727;
 }
 
 .sideBar a{

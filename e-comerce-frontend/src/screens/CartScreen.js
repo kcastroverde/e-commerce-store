@@ -19,12 +19,12 @@ const CartScreen = () => {
   const {cartLoaded, products} = cart
 
   const qtyChangeHandler = (id, qty) => {
-    console.log("triger data",id, qty)
+   
     dispatch(modifyCart(id, qty))
   }
 
   const removeFromCartHandler = item => {
-    console.log("remove data", item)
+
     dispatch(removeFromCart(item._id))
   }
 
@@ -41,7 +41,7 @@ const CartScreen = () => {
     products.length > 0 ? history('/checkout') : alert('Cart is empty')
   }
 
-  console.log("cart", cart)
+ 
 
   if (!cartLoaded) return <h1>Loading.....</h1>
   else if (cartLoaded)

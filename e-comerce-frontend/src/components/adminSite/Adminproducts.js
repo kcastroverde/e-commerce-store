@@ -126,6 +126,7 @@ const Adminproducts = () => {
               />
               <div className="image-select-product">
                   <p>Imagen:</p>
+                  {newProduct.imageToCharge === "" ? null: <img src={newProduct.imageToCharge} alt=""/>}
                   <input 
                   type="file"
                   onChange={(e) => {
@@ -166,8 +167,11 @@ const Adminproducts = () => {
                       <p>Categoria: </p>
                       {item.categorieId.name}
                     </div>
+                    <div>
+                      <p>stock: </p>
+                      {item.countInStock}
+                    </div>
                     <div className="image-admin-products">
-                  
                      <img src={item.imageUrl.url} alt=""/>
                     </div>
                     <div>

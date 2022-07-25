@@ -1,32 +1,32 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useState, useEffect} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
-import {Api} from '../../utils/Api'
+import { useDispatch, useSelector } from 'react-redux';
 import './signup.css'
+import { fetchSignUp } from '../../redux/actions/userAction';
 
 function Index() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
 
-  const _handleSubmit = useCallback(async () => {
+  const user = useSelector(state => state.user);
+  const {userDetails, loginSuccess, loading} = user;
+
+  const _handleSubmit =  () => {
     if (fullName.length > 2 && email.length > 2 && password.length > 2) {
-      setLoading(true)
-      const {statusCode, data} = await Api.postRequest('/api/user/signup', {
-        email,
-        fullName,
-        password,
-      })
-      if (statusCode === 400 || statusCode === 500 || statusCode === 403) {
-        setLoading(false)
-        alert(data)
-        return
+      dispatch(fetchSignUp(fullName, email, password));
       }
-      alert(data)
-      navigate('/signin')
     }
-  }, [email, fullName, password, navigate])
+
+  useEffect(() => {
+    if (loginSuccess) {
+      navigate('/')
+    }
+  }, [loginSuccess, navigate])
+
+
   if (loading) return <h1>Loading...</h1>
   return (
     <div className="signupscreen">

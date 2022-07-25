@@ -1,5 +1,6 @@
 const Categorie = require("../models/Categorie");
 const User = require("../models/User");
+const Product = require("../models/Product");
 
 const getCategoriesByStore = async (req, res) => {
   try {
@@ -50,20 +51,37 @@ const updateCategorie = async (req, res) => {
 };
 
 const deleteCategorie = async (req, res) => {
-    try{
-     const category = await Categorie.findById(req.params.id);
-     const user = await User.findById(req.user.id);
-        if(!category){
-            return res.status(404).json({message: "Categorie not found"});
-        }
+  //if product use this category, dont delete
+  try {
+    const user = req.user;
+    const products = await Product.find({ storeId: user.storeId });
+   
+    let inUse = false;
 
-        if(category.storeId.toString() == user.storeId.toString()){
-            await Categorie.findOneAndDelete({_id: req.params.id});
-            console.log("categorie delete");
-            return res.status(200).json({message: "Categorie deleted"});
-        }
+    products.forEach(product => {
+      if (product.categorieId == req.params.id) {
   
-            return res.status(401).json({message: "Unauthorized"});
+        inUse = true;
+      }
+    });
+
+    if (inUse) {
+      console.log("category in use");
+      return res.status(403).json({ message: "Category in use" });
+    
+    }
+    
+    const category = await Categorie.findById(req.params.id);
+ 
+    if (user.storeId.toString() == category.storeId.toString()) {
+      const categorie = await Categorie.findByIdAndDelete(req.params.id);
+      console.log("categorie delete");
+      const categories = await Categorie.find({ storeId: user.storeId });
+      return res.status(200).json(categories);
+    }else{
+      console.log("not atorized to delete");
+        return res.status(403).json({message: "not allowed"});
+    }
     
     }catch(error){
         console.error(error);

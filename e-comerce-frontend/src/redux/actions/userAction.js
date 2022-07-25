@@ -48,10 +48,12 @@ export const fetchSignIn = ({email, password}) => async dispatch => {
   }
 }
 
-export const fetchSignUp = (name, email, password) => async dispatch => {
+export const fetchSignUp = (fullName, email, password) => async dispatch => {
   try {
-    const { data } = await Api.sigUp(name, email, password);
-    dispatch(receiveUser(data));
+    const  data  = await Api.sigUp(fullName, email, password);
+    dispatch(receiveUser({
+      userDetails: data.user,
+    }));
   }
   catch (error) {
     dispatch(errorUser(error));

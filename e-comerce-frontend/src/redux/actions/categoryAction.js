@@ -34,3 +34,13 @@ export const newCategory = (name) => async dispatch => {
         dispatch(errorCategory(error));
     }
 }
+
+export const deleteCategory = (id) => async dispatch => {
+    try {
+        const data = await Api.deleteCategory(id);
+        dispatch(receiveCategory(data));
+    }
+    catch (error) {
+        dispatch(errorCategory(error));
+    }
+}

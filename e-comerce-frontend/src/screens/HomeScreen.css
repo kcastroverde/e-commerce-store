@@ -15,6 +15,18 @@
   grid-template-columns: repeat(4, 1fr);
 }
 
+
+
+.search-input-homescreen{
+  margin-top: 50px;
+}
+.homescreen input{
+  width: 100%;
+  border-radius: 20px;
+  font-size: 20px;
+  padding: 5px 10px;
+}
+
 @media (max-width: 1232px) {
   .homescreen__products {
     grid-template-columns: repeat(3, auto);

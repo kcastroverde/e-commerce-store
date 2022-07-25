@@ -6,7 +6,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Navbar from './components/Navbar'
 import SideDrawer from './components/SideDrawer'
 import Backdrop from './components/Backdrop'
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 // Screens
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
@@ -26,6 +26,7 @@ import OrderScreen from './screens/OrderScreen'
 import OrderDetails from './components/Orders/OrdersDetail'
 import AdminOrdersDetail from './components/adminSite/AdminOrdersDetail'
 import AdminEdithProducts from './components/adminSite/AdminEdithProducts'
+import CategoryScreen from './screens/CategoryScreen'
 
 
 function App() {
@@ -57,6 +58,8 @@ function App() {
           <Route  path="/checkout" element={<Checkout/>}/>
           <Route  path="/orders" element={<OrderScreen/>}/>
           <Route  path="/order/:id" element={<OrderDetails/>}/> 
+          <Route  path="/category/:id" element={<CategoryScreen/>}/>
+
           <Route  path="/admin" element={<AdminSite/>}>
           <Route index element={<Dashboard/>}/>
           <Route path="/admin/dashboard" element={<Dashboard/>}/>

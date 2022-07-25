@@ -37,7 +37,7 @@ export const fetchOrder = () => async dispatch => {
     dispatch(requestOrder());
     try {
         const data = await Api.getOrders();
-        console.log("data", data);
+     
         dispatch(receiveOrder(data));
     }
     catch (error) {
@@ -50,7 +50,10 @@ export const createOrder = (order) => async dispatch => {
     dispatch(savingOrder());
     try {
         const data = await Api.createOrder(order);
-        dispatch(receiveOrder(data));
+      
+        dispatch(receiveOrder(
+            data.orders
+        ));
     }
     catch (error) {
         dispatch(errorOrder(error));

@@ -1,41 +1,61 @@
 import './HomeScreen.css';
-import {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useEffect, useState} from 'react';
+import { useSelector} from 'react-redux';
 
 // Components
 import Product from '../components/Product';
 
-//Actions
-import { fetchProducts } from '../redux/actions/productActions';
-
-
 
 const HomeScreen = () => {
-  const dispatch = useDispatch()
+
 
   const getProducts = useSelector(state => state.product)
   const user = useSelector(state => state.user)
-  console.log("user", user)
-  const {products, loading, error} = getProducts
-  
+
+  const {products, loading, error, initialLoad} = getProducts
+
+  const [filterSearch, setFilterSearch] = useState('')
+  const [loadedProducts, setLoadedProducts] = useState(products)
+
+  const filter =()=>{
+    const filteredProducts = products.filter(product => {
+      return product.name.toLowerCase().includes(filterSearch.toLowerCase())
+    })
+    if(filterSearch === ''|| filterSearch === null|| filterSearch === undefined|| filterSearch === ' '){
+      setLoadedProducts(products)
+    }else{
+    setLoadedProducts(filteredProducts)
+    }
+  }
+
+  useEffect(()=>{
+    filter()
+  },[filterSearch, initialLoad])
 
 
-
-
-
-  console.log(getProducts)
   return (
     <div className="homescreen">
-      <h2 className="homescreen__title">Latest Products</h2>
+     
+
+      <div className='search-input-homescreen'>
+        <h3>Buscar producto:</h3>
+        <input 
+        type="text"
+        placeholder="nombre"
+        value={filterSearch}
+        onChange={(e)=>{
+          setFilterSearch(e.target.value)}}
+        />
+      </div>
       <div className="homescreen__products">
         {loading ? (
           <h2>Loading...</h2>
         ) : error ? (
           <h2>{error}</h2>
         ) : (
-          products.map(product => (
+          loadedProducts.map((product, index) => (
             <Product
-              key={product._id}
+              key={index}
               name={product.name}
               description={product.description}
               price={product.price}

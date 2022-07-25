@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { editProducts } from "../../redux/actions/productActions";
 import "./AdminEdithProducts.css";
 
 
@@ -13,15 +14,34 @@ const AdminEdithProducts = () => {
     const {categories, categoriesLoaded} = category;
     const [product, setProduct] = useState({});
 
+   
+
     const { id } = useParams();
 
     useEffect(() => {
         if (!productFind) {
             if(!initialLoad){
           const Product = products.find((p) => p._id === id);
-          setProduct(Product);
+          setProduct({...Product, newImg:""});
           setProductFind(true);
         }}}, [initialLoad]);
+
+    const handleChange = (e) => {
+      e.preventDefault();
+ 
+        dispatch(editProducts(product, id));
+    }
+
+    const convertImageToBase64 = (file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+    }
+
+
 
  
   return (
@@ -34,7 +54,9 @@ const AdminEdithProducts = () => {
         <h2>Cargando...</h2>
     </div>
     :
-      <form className="edit-product-form">
+      <form className="edit-product-form"
+      onSubmit={(e) => {handleChange(e)}}
+      >
         <div className="edit-top-products-detail">
           <div className="inputs-flex-colum">
             <p>Nombre: </p>
@@ -70,8 +92,10 @@ const AdminEdithProducts = () => {
             <p>Categoria: </p>
             <select
             value={product.categorieId._id}
+            onChange={(e) =>
+                setProduct({ ...product, categorieId: e.target.value })}
             >
-              <option value="">{product.categorieId.name}</option>
+              <option value={product.categorieId._id}>{product.categorieId.name}</option>
                 {categoriesLoaded &&
                     categories.map((category) => (
                         <option key={category._id} value={category._id}>
@@ -94,13 +118,19 @@ const AdminEdithProducts = () => {
 
           <div className="edit-image-select-product">
             <p>Imagen:</p>
+            {product.newImg !== ""?
+            <img src={product.newImg} alt="product"/>
+            :
             <img src={product.imageUrl.url} alt="product" />
-          </div>
+
+            }
+                      </div>
           <div>
             <input
                 type="file"
                 onChange={(e) =>
-                    setProduct({ ...product, imageUrl: e.target.files[0] })}
+                    convertImageToBase64(e.target.files[0]).then((base64) =>
+                    setProduct({ ...product, newImg: base64 }))}
             />
          
           </div>
@@ -112,12 +142,6 @@ const AdminEdithProducts = () => {
            className="edit-submit-save"
             value="Guardar"
           />
-                    <input
-            type="submit"
-
-            value="Eliminar"
-          />
-
         </div>
       </form>
     }

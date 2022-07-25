@@ -5,6 +5,9 @@ import {useDispatch, useSelector} from 'react-redux'
 import { logOut } from '../redux/actions/userAction'
 import { logoutCart } from '../redux/actions/cartActions'
 
+import AcordionDrawer from './sideDrower/AcordionDrawer'
+import AcordionDrawerCategory from './sideDrower/AcordionDrawerOrders'
+
 const SideDrawer = ({show, click}) => {
   const sideDrawerClass = ['sidedrawer']
   const user = useSelector(state => state.user)
@@ -33,29 +36,13 @@ const SideDrawer = ({show, click}) => {
 
   return (
     <div className={sideDrawerClass.join(' ')}>
-      <ul className="sidedrawer__links" onClick={click}>
+      <ul className="sidedrawer__links" onClick={click}
+      style={{paddingLeft: '0px'}}
+      >
       {loginSuccess? userDetails.role === "admin" ?
       <>     
-       <li>
-          <Link to="/admin/dashboard" className='admin__link'>
-          Admin Opciones 
-          </Link>
-      </li>
-      <li>
-          <Link to="/admin/orders" className='admin__link'>
-          Admin Ordenes 
-          </Link>
-      </li>
-      <li>
-          <Link to="/admin/products" className='admin__link'>
-          Admin Productos
-          </Link>
-      </li>
-      <li>
-          <Link to="/admin/category" className='admin__link'>
-          Admin Categorias
-          </Link>
-      </li>
+      <AcordionDrawer />
+      <AcordionDrawerCategory/>
       </>
       : null : null}
       <li>

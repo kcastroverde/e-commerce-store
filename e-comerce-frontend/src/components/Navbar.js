@@ -1,15 +1,15 @@
-import './Navbar.css'
-import {Link, useNavigate} from 'react-router-dom'
-import {useDispatch, useSelector} from 'react-redux'
-import {useEffect, useState} from 'react'
-import { getUserDetails, logOut } from '../redux/actions/userAction'
-import { getToken } from '../utils/localstorage'
-import { fetchCart, logoutCart } from '../redux/actions/cartActions'
-import { fetchStore } from '../redux/actions/storeActions'
-import { fetchOrder } from '../redux/actions/orderActions'
-import { fetchProducts } from '../redux/actions/productActions'
-import { fetchCategory } from '../redux/actions/categoryAction'
-
+import './Navbar.css';
+import {Link, useNavigate} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {useEffect, useState} from 'react';
+import { getUserDetails, logOut } from '../redux/actions/userAction';
+import { getToken } from '../utils/localstorage';
+import { fetchCart, logoutCart } from '../redux/actions/cartActions';
+import { fetchStore } from '../redux/actions/storeActions';
+import { fetchOrder } from '../redux/actions/orderActions';
+import { fetchProducts } from '../redux/actions/productActions';
+import { fetchCategory } from '../redux/actions/categoryAction';
+import DropdownCategory from './DropdownCategory';
 
 
 const Navbar = ({click}) => {
@@ -65,9 +65,11 @@ const Navbar = ({click}) => {
   }, [cartLoaded])
 
 
+
+
   
   return (
-    <nav className="navbar">
+    <nav className="navbar-component">
       <div className="navbar__logo">
         <Link to="/">
         <h2>{StoreLoaded?
@@ -75,8 +77,11 @@ const Navbar = ({click}) => {
         }</h2>
         </Link>
       </div>
+ 
+    
 
       <ul className="navbar__links">
+        <DropdownCategory/>
       {loginSuccess? userDetails.role === "admin" ?
       <li>
           <Link to="/admin" className='admin__link'>

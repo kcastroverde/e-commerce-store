@@ -71,9 +71,10 @@ const createOrderByUser = async (req, res) => {
                     orderNumber: orderLength+1,
                 });
                 console.log("order create");
+                const orders = await Order.find({userId: req.user._id})
                 return res.json({
                     orderSaved: true,
-                    order
+                    orders
                 });
             }else{
                 // update user 
@@ -93,9 +94,10 @@ const createOrderByUser = async (req, res) => {
                     orderNumber: orderLength+1,
             })
             console.log("order create");
+            const orders = await Order.find({userId: req.user._id})
             return res.json({
                 orderSaved: true,
-                order
+                orders
             });
         }
 

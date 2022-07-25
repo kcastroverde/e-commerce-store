@@ -19,7 +19,7 @@ export const fetchProducts = () => async dispatch => {
   dispatch(requestProducts());
   try {
     const data = await Api.getProducts();
-    console.log("data", data);
+  
     dispatch(receiveProducts({
       products: data,
     }));
@@ -52,5 +52,7 @@ export const editProducts = (formData, id) => async dispatch => {
     dispatch(errorProducts(error));
   }
 }
+
+
 
 

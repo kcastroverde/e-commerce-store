@@ -14,7 +14,7 @@ const signUpUser = async (req, res) => {
     const user = await User.create({...req.body, password: hash})
     let token = newToken(user, storeId)
     console.log('User created')
-    return res.status(201).send('Sucessfully account opened ', token)
+    return res.status(200).send({status: 'ok', token, user})
     
   } catch (err) {
     console.log('Error : ', err)

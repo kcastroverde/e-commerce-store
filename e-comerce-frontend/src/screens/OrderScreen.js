@@ -28,7 +28,7 @@ const OrderScreen = () => {
     return `${dateArr2[1]}/${dateArr2[2]}/${dateArr2[0]}`;
   };
 
-  console.log("ordenes", orders);
+  
   return (
     <div className="orderscreen">
       <div className="Order-tittle">

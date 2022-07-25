@@ -82,23 +82,31 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try{
-    const {name, price, description,countInStock,category, imageUrl} = req.body.formData;
+    const {name, price, description,countInStock,categorieId, newImg} = req.body.formData;
     const product = await Product.find({_id: req.params.id});
-    if(imageUrl !== product.imageUrl.url){
-      const cloudinaryUpload = await cloudinary.uploader.upload(imageUrl, {
+  
+    
+    if(newImg !== ""){
+      console.log("cloudinary upload");
+      const cloudinaryUpload = await cloudinary.uploader.upload(newImg, {
         folder: product.storeId,
         width: 500,
         crop: "scale"
       });
-      product.imageUrl.url = cloudinaryUpload.url;
-      product.imageUrl.public_id = cloudinaryUpload.public_id;
+      product[0].imageUrl.url = cloudinaryUpload.url;
+      product[0].imageUrl.public_id = cloudinaryUpload.public_id;
     }
+  
     const updatedProduct = await Product.updateOne({_id: req.params.id}, {
       name,
       price,
       description,
-      categorieId:category,
-      countInStock
+      categorieId:categorieId,
+      countInStock,
+      imageUrl: {
+        url: product[0].imageUrl.url,
+        public_id: product[0].imageUrl.public_id
+      }
     });
 
     console.log("product update");

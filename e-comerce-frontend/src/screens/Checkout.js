@@ -80,7 +80,7 @@ const Checkout = () => {
       .toFixed(2);
   };
 
-  console.log("cartItems", cartItems);
+
   return (
     <div className="Checkout">
       <div className="container">

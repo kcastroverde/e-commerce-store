@@ -44,8 +44,13 @@ const sigIn = async ({email, password}) => {
   return data
 }
 
-const sigUp = async (name, email, password) => {
-  const {data} = await axios.post(`${API}/user/signup`, {name, email, password, STORE_ID})
+const sigUp = async (fullName, email, password) => {
+  const {data} = await axios.post(`${API}/user/signup`, {
+    fullName, 
+    email, 
+    password, 
+    storeId:STORE_ID
+  })
   //save token to localstorage
   setToken(data.token)
   return data
@@ -53,7 +58,7 @@ const sigUp = async (name, email, password) => {
 
 const getProducts = async () => {
   const {data} = await axios.get(`${API}/products/${STORE_ID}`)
-  console.log("dataAPI", data)
+
   return data
 }
 
@@ -81,6 +86,7 @@ const createProduct = async (formData) => {
 const updateProduct = async (formData, id) => {
   const token = getToken()
   const headers = {
+    'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`
   }
   const {data} = await axios.put(`${API}/products/${id}`, {formData}, {headers})
@@ -124,7 +130,7 @@ const deleteCategory = async (id) => {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`
   }
-  const {data} = await axios.delete(`${API}/categories/delete/${id}`, {headers})
+  const {data} = await axios.delete(`${API}/categories/${id}`, {headers})
   return data
 }
 

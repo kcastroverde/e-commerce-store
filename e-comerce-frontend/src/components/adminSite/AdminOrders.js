@@ -46,13 +46,18 @@ const AdminOrders = () => {
                 <div><p>{index+1}</p></div>
                 <div><p>{fiveDigit(order.orderNumber)}</p></div>
                 <div><p>${order.total.toFixed(2)}</p></div>
-                <div className="confirmed-order"><p>confirmada</p></div>
+                <div className={order.finalStatus === 'confirmed'?
+                "confirmed-order": "cancelled-order"
+                }><p>{order.finalStatus === 'confirmed'?
+                "confirmada": "cancelada"
+              }</p></div>
                 <div><button
                  onClick={() => handleDetails(order._id)}
                 >ver</button></div> 
             </div>
             ))}
         </div>
+
         </>
 :<div> cargando...</div>}
       </div>
