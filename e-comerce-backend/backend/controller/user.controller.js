@@ -118,10 +118,22 @@ const createFirstUser = async (req, res) => {
     if(password === undefined){
       return sendResponseError(400, 'Password is required !', res)
     }
-    console.log('EROR', err)
+    console.log('error', err)
+    return sendResponseError(500, `Error ${err}`, res)
+  }
+}
+
+const getUsersByStore = async (req, res) => {
+  try {
+    const users = await User.find({storeId: req.user.storeId})
+    console.log("user get")
+    return res.status(200).send(users)
+  } catch (err) {
+    console.log('error', err)
     return sendResponseError(500, `Error ${err}`, res)
   }
 }
 
 
-module.exports = {signUpUser, signInUser, getUser, updateUser, createUser, createFirstUser}
+
+module.exports = {signUpUser, signInUser, getUser, updateUser, createUser, createFirstUser, getUsersByStore}

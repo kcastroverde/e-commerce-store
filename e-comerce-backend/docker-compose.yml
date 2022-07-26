@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  store-api:
+    build: .
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    links:
+      - store-1
+    depends_on:
+      - store-1
+    env_file: 
+      - .env
+    environment: 
+      - MONGO_URI=mongodb://admin:passStore123.@localhost:27017/store?authSource=admin
+      - CLOUDINARY_NAME=dydvp6kk1
+      - CLOUDINARY_KEY=319988932679623 
+      - CLOUDINARY_SECRET=j-Gwtjk0jPwvlmElqovh4EgadaQ
+      - OPCO_HOST=vps-2585605-x.dattaweb.com
+      - OPCO_USER=no-reply@opencoffee.io
+      - OPCO_PASSWORD=EUtYO1Wu6K 
+     
+  store-1:
+    image: mongo
+    ports:
+      - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=passStore123.
+      - MONGO_INITDB_DATABASE=store
+    env_file:
+      - .env
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

@@ -1,5 +1,6 @@
-const { findById } = require('../models/Cart')
-const Cart = require('../models/Cart')
+const { findById } = require('../models/Cart');
+const Cart = require('../models/Cart');
+
 
 const getCartProducts = async (req, res) => {
   try {
@@ -15,12 +16,27 @@ const getCartProducts = async (req, res) => {
 const addProductInCart = async (req, res) => {
   try {
     const {productId, count} = req.body
-    const cart = new Cart({
-      userId: req.user._id,
-      productId,
-      count
-    })
-    await cart.save()
+
+    const myCarts = await Cart.find({userId: req.user._id})
+    //if product exist in cart error
+    let exist = false
+    myCarts.forEach(cart => {
+      if (cart.productId.toString() == productId.toString()) {
+        exist = true
+      }});
+    if (exist) {
+      console.log("product exist in cart")
+      return res.status(400).send({status: 'error', message: 'product already exist in cart'})
+    }
+
+
+      const cart = new Cart({
+        userId: req.user._id,
+        productId,
+        count
+      })
+      await cart.save()
+    
     const carts = await Cart.find({userId: req.user._id}).populate('productId')
     console.log("cart add")
     return res.status(200).send({status: 'ok', carts})
@@ -46,8 +62,10 @@ const deleteProductInCart = async (req, res) => {
 
 const modifyProductInCart = async (req, res) => {
   const {productId, count} = req.body
+  console.log(productId, count)
   try {
-    const cart = await Cart.updateOne({productId, count})
+    const cartByUser = await Cart.findOne({userId: req.user._id, productId})
+    const cart = await Cart.findByIdAndUpdate(cartByUser._id, {count})
     console.log("cart modify")
     const carts = await Cart.find({userId: req.user._id}).populate('productId')
     return res.status(200).send({status: 'ok', carts})
@@ -61,7 +79,8 @@ const clearCart = async (req, res) => {
   try {
     const cart = await Cart.deleteMany({userId: req.user.id})
     console.log("cart clear")
-    return res.status(200).send({status: 'ok', cart})
+    const carts = await Cart.find({userId: req.user._id}).populate('productId')
+    return res.status(200).send({status: 'ok', carts})
   } catch (err) {
     console.log(err)
     return res.status(500).send({status: 'error', err})

@@ -1,5 +1,6 @@
 const Order = require("../models/Order");
 const User = require("../models/User");
+const opcoMail = require('../config/opconodemailer');
 
 const getOrders = async (req, res) => {
     try{
@@ -61,10 +62,38 @@ const createOrderByUser = async (req, res) => {
                     storeId: user.storeId,
                     products: req.body.products,
                     total: req.body.total,
+                    tokenUsed: req.body.tokenUsed,
+                    wallet: req.body.wallet,
+                    orderType: req.body.orderType,
+                    txHash: req.body.txHash,
+                    payed: req.body.payed,
                     orderNumber: orderLength+1,
                 });
                 console.log("order create");
+                const numberToFiveDigits = (number) => {
+                    return number.toString().padStart(5, '0');
+                }
+           
+                    opcoMail({
+                        from: 'no-reply@opencoffee.io',
+                        to: `${user.email},castroverde.kevin@gmail.com`,
+                        subject: `Orden #${numberToFiveDigits(order.orderNumber)}`,
+                        html: `<p>Hola ${user.fullName},</p>
+                        <p>Tu orden #${numberToFiveDigits(order.orderNumber)} ha sido guardada.</p>
+                        <p>Detalles de la orden:</p>
+                        <p>Productos: </p> ${order.products.map(product => `<p>${product.productId.name}</p>`).join('')}
+                        <p>Total: ${order.total}</p>
+                        <p>Token usado: ${order.tokenUsed}</p>
+                        <p>Wallet: ${order.wallet}</p>
+                        <p>Hash: ${order.txHash}</p>
+                        <br/>
+                        <p>Gracias por tu compra!</p>
+    
+                        ` 
+                    })
+                
                 const orders = await Order.find({userId: req.user._id})
+                
                 return res.json({
                     orderSaved: true,
                     orders
@@ -84,15 +113,42 @@ const createOrderByUser = async (req, res) => {
                     storeId: user.storeId,
                     products: req.body.products,
                     total: req.body.total,
+                    tokenUsed: req.body.tokenUsed,
+                    wallet: req.body.wallet,
+                    orderType: req.body.orderType,
+                    txHash: req.body.txHash,
+                    payed: req.body.payed,
                     orderNumber: orderLength+1,
             })
             console.log("order create");
             const orders = await Order.find({userId: req.user._id})
+            const numberToFiveDigits = (number) => {
+                return number.toString().padStart(5, '0');
+            }
+  
+                await opcoMail.senMail({
+                    from: 'no-reply@opencoffee.io',
+                    to: `${user.email},castroverde.kevin@gmail.com`,
+                    subject: `Orden #${numberToFiveDigits(order.orderNumber)}`,
+                    html: `<p>Hola ${user.fullName},</p>
+                    <p>Tu orden #${numberToFiveDigits(order.orderNumber)} ha sido guardada.</p>
+                    <p>Detalles de la orden:</p>
+                    <p>Productos: </p> ${order.products.map(product => `<p>${product.productId.name}</p>`).join('')}
+                    <p>Total: ${order.total}</p>
+                    <p>Token usado: ${order.tokenUsed}</p>
+                    <p>Wallet: ${order.wallet}</p>
+                    <p>Hash: ${order.txHash}</p>
+                    <br/>
+                    <p>Gracias por tu compra!</p>
+
+                    ` 
+                })
+            }
             return res.json({
                 orderSaved: true,
                 orders
             });
-        }
+        
 
     }catch(error){
         console.error(error);
@@ -110,6 +166,18 @@ const updateOrder = async (req, res) => {
             const order = await Order.updateOne({_id: orderId}, req.body);
             console.log("order update");
             const orders = await Order.find({userId: req.user._id})
+            const numberToFiveDigits = (number) => {
+                return number.toString().padStart(5, '0');
+            }
+            const orderFind = await Order.findById(orderId);
+            console.log("orderNumber",orderFind.orderNumber)
+            await opcoMail.sendMail({
+                from: 'no-reply@opencoffee.io',
+                    to: `${req.user.email},castroverde.kevin@gmail.com`,
+                    subject: `Orden #${numberToFiveDigits(orderFind.orderNumber)}`,
+                    html: `<p>Hola ${req.user.fullName},</p>
+                    <p>Tu orden #${numberToFiveDigits(orderFind.orderNumber)} ha sido actualizada.</p>`
+                })
             return res.json({
                 orderSaved: true,
                 orders
@@ -128,7 +196,7 @@ const deleteOrder = async (req, res) => {
     const userId = req.params.userId;
     try{
 
-        if(userId === order.userId){
+        if(userId === Order.userId){
             const order = await order.findByIdAndDelete(req.params.id);
             console.log("order delete");
             return res.json(order);

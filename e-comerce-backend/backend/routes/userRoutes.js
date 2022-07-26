@@ -5,17 +5,19 @@ const {
   getUser,
   updateUser,
   createUser,
-  createFirstUser
+  createFirstUser,
+  getUsersByStore
 } = require('../controller/user.controller')
-const {verifyUser, verifySuperAdmin} = require('../middleware/middleware')
+const {verifyUser, verifySuperAdmin, verifyAdmin} = require('../middleware/middleware')
 const router = express.Router()
 
 router.post('/signup', signUpUser)
 router.post('/signin', signInUser)
 router.get('/user', verifyUser, getUser)
-router.put('/user', verifyUser, updateUser)
-router.post('/user',verifySuperAdmin, createUser)
+router.put('/user', verifyAdmin, updateUser)
+router.post('/user',verifyAdmin, createUser)
 router.post('/firstuser', createFirstUser)
+router.get('/users', verifyAdmin, getUsersByStore)
 
 
 module.exports = router

@@ -4,14 +4,14 @@ const mongoose = require('mongoose')
 const connectDB = async () => {
   try {
     await mongoose.connect(
-      process.env.MONGO_URI,
+      'mongodb://admin:passStore123.@store-1-1:27017/store?authSource=admin',
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
       },
     )
-
+   
     console.log('MongoDB connection SUCCESS')
   } catch (error) {
     console.error('MongoDB connection FAIL')

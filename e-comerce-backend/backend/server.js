@@ -33,7 +33,7 @@ app.use('/api/categories', categoryRoutes)
 app.use('/api/stores', storeRoutes)
 app.use('/api/orders', orderRoutes)
 
-const PORT = process.env.PORT || 5000
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+const PORT = process.env.NODE_LOCAL_PORT || 3000
+app.listen(PORT, () => console.log(`Docker Server running on port ${PORT}`))
 
 process.on('warning', e => console.warn(e.stack));
