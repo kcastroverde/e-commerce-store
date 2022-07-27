@@ -3,8 +3,8 @@ import {getToken, setToken} from './localstorage'
 
 
 const API = "http://localhost:5000/api";
-export const STORE_ID= "62d5b22ee529916689066b8c"
-//const STORE_ID= "62d5b221e529916689066b89"
+export const STORE_ID= "62e0d3f50f384b00147b4601"
+
 
 const getStore = async () => {
   const {data} = await axios.get(`${API}/stores/${STORE_ID}`);

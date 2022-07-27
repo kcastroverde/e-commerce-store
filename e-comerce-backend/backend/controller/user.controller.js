@@ -76,11 +76,14 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
 
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
-    if(user.id === req.user.id){  
+    const {_id, role} = req.body;
+    console.log('userId', req.body)
+    const user = await User.findByIdAndUpdate( _id, {role}, {new: true})
+    
       console.log("user update")
-     return res.status(200).send(user)
-    }
+    const users = await User.find({storeId: req.user.storeId})
+     return res.status(200).send(users)
+    
   } catch (err) {
     console.log('EROR', err)
     return sendResponseError(500, `Error ${err}`, res)

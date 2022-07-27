@@ -31,7 +31,11 @@ const getStoreById = async (req, res) => {
 
 const createStore = async (req, res) => {
     try {
-        const stores = await store.create(req.body, { new: true });
+        const {name, discount} = req.body;
+        const stores = await store.create({
+            name,
+            discount
+        });
         console.log("store create");
         return res.status(201).json(stores);
     } catch (error) {

@@ -16,6 +16,8 @@ services:
       - OPCO_HOST=vps-2585605-x.dattaweb.com
       - OPCO_USER=no-reply@opencoffee.io
       - OPCO_PASSWORD=EUtYO1Wu6K 
+    stdin_open: true
+    tty: true
      
   storedb:
     image: mongo
