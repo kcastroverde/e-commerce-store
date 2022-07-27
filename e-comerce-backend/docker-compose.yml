@@ -1,17 +1,15 @@
 version: "3.9"
 services:
-  store-api:
+  storeapi:
     build: .
     ports:
       - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
     links:
-      - store-1
-    depends_on:
-      - store-1
+      - storedb
     env_file: 
       - .env
     environment: 
-      - MONGO_URI=mongodb://admin:passStore123.@localhost:27017/store?authSource=admin
+      - MONGO_URI=mongodb://admin:passStore123.@e-comerce-backend-storedb-1:27017/store?authSource=admin
       - CLOUDINARY_NAME=dydvp6kk1
       - CLOUDINARY_KEY=319988932679623 
       - CLOUDINARY_SECRET=j-Gwtjk0jPwvlmElqovh4EgadaQ
@@ -19,7 +17,7 @@ services:
       - OPCO_USER=no-reply@opencoffee.io
       - OPCO_PASSWORD=EUtYO1Wu6K 
      
-  store-1:
+  storedb:
     image: mongo
     ports:
       - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
